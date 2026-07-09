@@ -1,130 +1,52 @@
 # Contributing to MedRemind
 
-Thank you for helping improve MedRemind. This guide explains how to set up the project locally, follow the collaboration workflow, and keep changes consistent.
+Thank you for helping improve MedRemind.
 
-## Getting Started
+## How to Contribute
 
-### 1. Clone the repository
+Use this workflow for every contribution:
 
-```bash
-git clone <your-repository-url>
-cd MedRemind
-```
-
-### 2. Create a feature branch
-
-Always work on a branch created from `main`.
+1. Start from the latest `main` branch.
 
 ```bash
 git checkout main
 git pull origin main
+```
+
+2. Create a new feature branch for your work.
+
+```bash
 git checkout -b feature/short-description
 ```
 
-Use a clear branch name such as:
-- `feature/login-flow`
-- `fix/navbar-alignment`
-- `chore/update-dependencies`
-
-### 3. Install dependencies
-
-Install frontend and backend dependencies separately:
-
-```bash
-cd frontend
-npm install
-
-cd ../backend
-npm install
-```
-
-### 4. Run the app locally
-
-Frontend:
-
-```bash
-cd frontend
-npm run dev
-```
-
-Backend:
-
-The backend is currently a scaffold and does not yet include a start script or server entry file. Add the backend start command here once it exists.
-
-## Workflow Rules
-
-- Never push directly to `main`.
-- Always create a branch for your work.
-- Open a pull request for review before merging.
-- Keep pull requests focused on one task or bug when possible.
-- Pull the latest changes from `main` before starting new work.
-- If your branch is behind `main`, rebase or merge `main` before opening a PR, following the project preference if one is established.
-
-## Coding Standards
-
-- Match the existing code style and file structure.
-- Keep components and functions small and readable.
-- Use descriptive names for variables, functions, and files.
-- Avoid adding unnecessary dependencies.
-- Write clear commit messages.
-- Test your changes locally before opening a PR.
-- Do not leave debugging code, commented-out code, or temporary logs in committed files.
-
-## Suggested Commit Message Style
-
-Use short, descriptive commit messages such as:
-- `feat: add medication reminder card`
-- `fix: prevent duplicate reminders`
-- `docs: update setup guide`
-- `chore: update dependencies`
-
-## Common Git Commands
-
-### Basic workflow
+3. Make your changes and check them locally.
 
 ```bash
 git status
-git branch
-git checkout -b feature/my-change
+git diff
+```
+
+4. Commit your work with a clear message.
+
+```bash
 git add .
 git commit -m "feat: describe your change"
-git push origin feature/my-change
 ```
 
-### Sync with remote
+5. Push the branch to the remote repository.
 
 ```bash
-git fetch origin
-git pull origin main
-git pull --rebase origin main
+git push -u origin feature/short-description
 ```
 
-### Inspect history and changes
+6. Open a pull request from your branch into `main`.
 
-```bash
-git log --oneline --graph --decorate --all
-git diff
-git diff --staged
-git show <commit-hash>
-```
+7. Wait for review and approval.
 
-### Undo local changes carefully
+## Who Merges?
 
-```bash
-git restore <file>
-git restore --staged <file>
-git clean -n
-```
+- Contributors should not merge directly into `main`.
+- Contributors open a pull request and stop there.
+- Maintainers review the change and merge it into `main` after approval.
 
-## Pull Request Checklist
-
-Before opening a PR, make sure:
-- Your branch is up to date with `main`.
-- Your code runs locally.
-- You have checked for lint or build issues.
-- Your changes are described clearly in the PR.
-- You have not committed unrelated files.
-
-## Need Help?
-
-If something is unclear, leave a note in the PR or ask the maintainers before merging into `main`.
+For coding standards, pull request rules, and common git commands, see [PROJECT_GUIDELINES.md](PROJECT_GUIDELINES.md).
