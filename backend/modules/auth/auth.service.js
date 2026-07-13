@@ -54,3 +54,11 @@ export const loginService = async (userData) => {
         }
     };
 };
+
+export const getCurrentUserService = async (userId) => {
+    const user = await User.findById(userId).select("-password");;
+    if(!user){
+        throw new ApiError(404, "User not found");
+    }
+    return user;
+};
