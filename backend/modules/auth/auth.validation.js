@@ -33,3 +33,10 @@ export const loginSchema = z.object({
         .min(8, "Password must contain at least 8 characters")
         .max(100),
 });
+
+export const verifyEmailSchema = z.object({
+    token: z
+        .string()
+        .trim()
+        .min(1, "Verification token is required."),
+});

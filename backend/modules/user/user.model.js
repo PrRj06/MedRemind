@@ -18,9 +18,21 @@ const userSchema = new mongoose.Schema(
             required: true,
         },
         role: {
-            type:String,
+            type: String,
             enum: ["doctor","patient"],
             required:true,
+        },
+        emailVerified: {
+            type: Boolean,
+            default: false,
+        },
+        emailVerificationToken: {
+            type: String,
+            default: null,
+        },
+        emailVerificationExpires: {
+            type: Date,
+            default: null,
         },
     },
     {

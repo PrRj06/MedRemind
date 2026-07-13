@@ -1,6 +1,7 @@
 import { registerService } from "./auth.service.js";
 import { loginService } from "./auth.service.js";
 import { getCurrentUserService } from "./auth.service.js";
+import { verifyEmailService } from "./auth.service.js";
 
 export const register = async (req, res, next) => {
     try{
@@ -42,6 +43,15 @@ export const getCurrentUser = async (req,res,next) => {
                 user,
             },
         });
+    }catch(error){
+        next(error);
+    }
+};
+
+export const verifyEmail = async (req,res,next) => {
+    try{
+        const result = await verifyEmailService(req.body.token);
+        res.status(200).json(result);
     }catch(error){
         next(error);
     }
