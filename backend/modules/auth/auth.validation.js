@@ -1,6 +1,6 @@
-import { email, z } from "zod";
+import { z } from "zod";
 
-const registerSchema = z.object({
+export const registerSchema = z.object({
     name: z
         .string()
         .trim()
@@ -20,4 +20,16 @@ const registerSchema = z.object({
     
     role: z.enum(["doctor", "patient"]),
 });
-export default registerSchema;
+
+export const loginSchema = z.object({
+    email: z
+        .string()
+        .trim()
+        .email("Invalid email address")
+        .toLowerCase(),
+
+    password: z
+        .string()
+        .min(8, "Password must contain at least 8 characters")
+        .max(100),
+});
