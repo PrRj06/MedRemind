@@ -81,3 +81,11 @@ export const resetPassword = async (req,res,next) => {
         next(error);
     }
 }
+
+export const logout = async (req,res,next) => {
+    res.clearCookie("accessToken", accessTokenCookieOptions);
+    return res.status(200).json({
+        success: true,
+        message: "Logged out successfully.",
+    });
+};
