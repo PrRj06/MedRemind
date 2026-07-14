@@ -1,8 +1,7 @@
-function App(){
-  return(
-    <>
-      <h1 className="text-2xl text-center font-bold ">MedRemind</h1>
-    </>
-  )
-};
+import Login from "./login";
+
+function App() {
+  return <Login />;
+}
+
 export default App;
