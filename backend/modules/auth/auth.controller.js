@@ -4,6 +4,7 @@ import { getCurrentUserService } from "./auth.service.js";
 import { verifyEmailService } from "./auth.service.js";
 import { forgotPasswordService } from "./auth.service.js";
 import { resetPasswordService } from "./auth.service.js";
+import { accessTokenCookieOptions } from "../../shared/constants/cookieOptions.js";
 
 export const register = async (req, res, next) => {
     try{
@@ -23,13 +24,16 @@ export const register = async (req, res, next) => {
 
 export const login = async (req, res, next) => {
     try{
-        const data = await loginService(req.body);
-        
+        const {token, user} = await loginService(req.body);
+
+        res.cookie("accessToken", token, accessTokenCookieOptions);
+
         return res.status(200).json({
             success: true,
             message: "Login successful",
-            data,
+            user,
         });
+        
     }catch(error){
         next(error);
     }
