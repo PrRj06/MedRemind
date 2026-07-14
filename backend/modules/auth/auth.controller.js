@@ -2,6 +2,8 @@ import { registerService } from "./auth.service.js";
 import { loginService } from "./auth.service.js";
 import { getCurrentUserService } from "./auth.service.js";
 import { verifyEmailService } from "./auth.service.js";
+import { forgotPasswordService } from "./auth.service.js";
+import { resetPasswordService } from "./auth.service.js";
 
 export const register = async (req, res, next) => {
     try{
@@ -56,3 +58,22 @@ export const verifyEmail = async (req,res,next) => {
         next(error);
     }
 };
+
+export const forgotPassword = async (req,res,next) => {
+    try{
+        const result = await forgotPasswordService(req.body.email);
+        res.status(200).json(result);
+    }catch(error){
+        next(error);
+    }
+
+};
+
+export const resetPassword = async (req,res,next) => {
+    try{
+        const result = await resetPasswordService(req.body.token, req.body.password);
+        res.status(200).json(result);
+    }catch(error){
+        next(error);
+    }
+}
