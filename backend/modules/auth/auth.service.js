@@ -29,6 +29,7 @@ export const registerService = async (userData) => {
 
     // to create a empty patient document for patient
     if (user.role === "patient"){
+        console.log("Creating patient profile...");
         await Patient.create({
             userId: user._id,
         });
