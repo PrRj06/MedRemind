@@ -1,12 +1,12 @@
-# MedRemind
+# MedRemind..
 
 Smart Healthcare Tracker.
 
-## Overview
+## Overview..
 
 MedRemind is organized as a simple monorepo with a React frontend and an Express backend scaffold.
 
-## Start Here
+## Start Here..
 
 For local setup, branch workflow, coding standards, and common git commands, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
