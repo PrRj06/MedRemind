@@ -1,0 +1,208 @@
+import "./Login.css";
+import { useState } from "react";
+import logo from "../assests/unnamed.png";
+
+function Login({ onSwitchToSignup }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+  };
+
+  return (
+    <div className="page">
+      <div className={`container ${darkMode ? "dark" : ""}`}>
+        {/* Left Section */}
+        <div className="left">
+          <div>
+            <div className="logo">
+              <img src={logo} alt="MedRemind logo" className="logoImg" />
+              <div>
+                <h1>MedRemind</h1>
+                <p>Medicine Reminder Platform</p>
+              </div>
+            </div>
+
+            <p className="tagline">
+              "Because we also care about their health."
+            </p>
+          </div>
+
+          <div>
+            <h2>
+              Never let your precious ones
+              <br />
+              <span>Miss a dose.</span>
+            </h2>
+
+            <div className="cards">
+              <div className="card">
+                <h3>❤️ Family Care</h3>
+                <p>
+                  Manage medicines for your parents & grandparents from
+                  anywhere.
+                </p>
+              </div>
+
+              <div className="card">
+                <h3>💬 WhatsApp Reminders</h3>
+                <p>Automatic medicine alerts sent directly on WhatsApp.</p>
+              </div>
+
+              <div className="card">
+                <h3>🩺 Doctor Trusted</h3>
+                <p>
+                  Clinics use MedRemind to ensure patients follow prescriptions.
+                </p>
+              </div>
+
+              <div className="card">
+                <h3>📊 Adherence Tracking</h3>
+                <p>Track whether medicines are taken on time.</p>
+              </div>
+
+              <div className="card appointment">
+                <h3>📅 Doctor Appointment</h3>
+                <p>Book your doctor appointments directly in one click.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="testimonials">
+            <div className="avatars">
+              <div className="avatar">👨</div>
+              <div className="avatar">👩</div>
+              <div className="avatar">👴</div>
+              <div className="avatar">👵</div>
+            </div>
+            <div>
+              <div className="rating">
+                <span className="stars">★★★★★</span>
+                4.9 / 5
+              </div>
+              <div className="trustText">
+                Trusted by families & clinics for reliable medicine reminders
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Section */}
+        <div className="right">
+          <div className="darkModeToggle">
+            <span>🌙 Dark Mode</span>
+            <button
+              type="button"
+              className={`toggleSwitch ${darkMode ? "active" : ""}`}
+              role="switch"
+              aria-checked={darkMode}
+              aria-label="Toggle dark mode"
+              onClick={() => setDarkMode(!darkMode)}
+            />
+          </div>
+
+          <h1>Welcome back</h1>
+          <p className="subtitle">
+            Sign in to manage medicine reminders for your loved ones.
+          </p>
+
+          <button type="button" className="googleBtn">
+            <span aria-hidden="true">🌐</span> Continue with Google
+          </button>
+
+          <p className="orText">or continue with email</p>
+
+          <form onSubmit={handleLogin} noValidate>
+            <div className="inputGroup">
+              <label htmlFor="email">Email</label>
+              <span className="icon" aria-hidden="true">
+                ✉️
+              </span>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="inputGroup">
+              <label htmlFor="password">Password</label>
+              <span className="icon" aria-hidden="true">
+                🔒
+              </span>
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                autoComplete="current-password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                className="passwordToggle"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </button>
+            </div>
+
+            <div className="checkboxContainer">
+              <label className="checkboxLabel" htmlFor="rememberMe">
+                <input
+                  id="rememberMe"
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                />
+                Remember me
+              </label>
+              <a href="#" className="forgotPassword">
+                Forgot password?
+              </a>
+            </div>
+
+            <button type="submit" className="loginBtn">
+              Sign in →
+            </button>
+          </form>
+
+          <p className="signup">
+            Don't have an account?{" "}
+            <button type="button" className="link" onClick={onSwitchToSignup}>
+              Sign up
+            </button>
+          </p>
+
+          <div className="usageInfo">
+            <strong>Managing medicines for:</strong>
+            <div className="usageTypes">
+              <div className="usageType">
+                <span className="icon">❤️</span>
+                <span className="label">Parents / Grandparents</span>
+              </div>
+              <div className="usageType">
+                <span className="icon">🩺</span>
+                <span className="label">Patients (for doctors)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Login;

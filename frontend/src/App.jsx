@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Login from "./Login";
-import Signup from "./Signup";
+import Login from "./pages/login";
+import Signup from "./pages/Signup";
 
 function App() {
   const [isLogin, setIsLogin] = useState(true);
@@ -12,4 +12,4 @@ function App() {
   );
 }
 
-export default App;
+export default App; 
