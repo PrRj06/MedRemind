@@ -1,13 +1,13 @@
+import "./Login.css";
 import { useState } from "react";
 import logo from "../assests/unnamed.png";
-import "./Login.css";
 
 const DUMMY_CREDENTIALS = {
   doctor: { email: "doctor@medremind.com", password: "doctor123" },
   patient: { email: "patient@medremind.com", password: "patient123" },
 };
 
-function Login({ onSwitchToSignup, onLoginSuccess }) {
+function Login({ onSwitchToSignup, onLoginSuccess, onForgotPassword }) {
   const [role, setRole] = useState("patient");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,7 +30,6 @@ function Login({ onSwitchToSignup, onLoginSuccess }) {
   return (
     <div className="page">
       <div className={`container ${darkMode ? "dark" : ""}`}>
-        {/* Left Section */}
         <div className="left">
           <div>
             <div className="logo">
@@ -105,7 +104,6 @@ function Login({ onSwitchToSignup, onLoginSuccess }) {
           </div>
         </div>
 
-        {/* Right Section */}
         <div className="right">
           <div className="darkModeToggle">
             <span>🌙 Dark Mode</span>
@@ -223,9 +221,13 @@ function Login({ onSwitchToSignup, onLoginSuccess }) {
                 />
                 Remember me
               </label>
-              <a href="#" className="forgotPassword">
+              <button
+                type="button"
+                className="forgotPassword"
+                onClick={onForgotPassword}
+              >
                 Forgot password?
-              </a>
+              </button>
             </div>
 
             {error && <p className="formError">{error}</p>}

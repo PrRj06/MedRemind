@@ -1,8 +1,9 @@
 import { useState } from "react";
-import DoctorDashboard from "./pages/DoctorDashboard";
 import Login from "./pages/login";
-import PatientDashboard from "./pages/PatientDashboard";
 import Signup from "./pages/Signup";
+import ForgetPass from "./pages/forgetpassword";
+import DoctorDashboard from "./pages/DoctorDashboard";
+import PatientDashboard from "./pages/PatientDashboard";
 
 function App() {
   const [view, setView] = useState("login");
@@ -19,6 +20,10 @@ function App() {
     return <Signup onSwitchToLogin={() => setView("login")} />;
   }
 
+  if (view === "forgot-password") {
+    return <ForgetPass onBackToLogin={() => setView("login")} />;
+  }
+
   if (view === "doctor-dashboard") {
     return <DoctorDashboard onLogout={handleLogout} />;
   }
@@ -30,6 +35,7 @@ function App() {
   return (
     <Login
       onSwitchToSignup={() => setView("signup")}
+      onForgotPassword={() => setView("forgot-password")}
       onLoginSuccess={handleLoginSuccess}
     />
   );

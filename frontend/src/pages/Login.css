@@ -442,6 +442,46 @@ body{
     box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.15);
 }
 
+.inputGroup.hasError input{
+    border-color:#e0574a;
+}
+
+.inputGroup.hasError input:focus{
+    box-shadow: 0 0 0 3px rgba(224, 87, 74, 0.15);
+}
+
+.errorText{
+    color:#c0392b;
+    font-size:12px;
+    margin-top:6px;
+}
+
+.successMessage{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    background:#f3faf5;
+    border:1px solid #cdecd7;
+    border-radius:12px;
+    padding:16px;
+    margin-top:6px;
+    font-size:14px;
+    color:#2f6b45;
+    line-height:1.5;
+    animation: fadeInUp 0.35s ease both;
+}
+
+.successMessage .successIcon{
+    font-size:20px;
+    flex-shrink:0;
+}
+
+.container.dark .successMessage{
+    background:rgba(76,175,101,0.08);
+    border-color:rgba(76,175,101,0.25);
+    color:#8fd6a3;
+}
+
 .passwordToggle{
     position:absolute;
     right:8px;
@@ -508,10 +548,14 @@ body{
 }
 
 .forgotPassword{
+    background:none;
+    border:none;
+    padding:0;
     color: #d4a574;
     text-decoration: none;
     cursor: pointer;
     font-weight: 500;
+    font-size: 13px;
 }
 
 .forgotPassword:hover{
