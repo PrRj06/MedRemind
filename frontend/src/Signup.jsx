@@ -8,9 +8,38 @@ function Signup({ onSwitchToLogin }) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [darkMode, setDarkMode] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!fullName.trim()) {
+      newErrors.fullName = "Full name is required";
+    }
+
+    if (!email.trim()) {
+      newErrors.email = "Email is required";
+    }
+
+    if (!password.trim()) {
+      newErrors.password = "Password is required";
+    }
+
+    if (!confirmPassword.trim()) {
+      newErrors.confirmPassword = "Please confirm your password";
+    } else if (password !== confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSignup = (e) => {
     e.preventDefault();
+    if (validateForm()) {
+      console.log("Signup submitted", { fullName, email, password });
+    }
   };
 
   return (
@@ -101,48 +130,72 @@ function Signup({ onSwitchToLogin }) {
 
         <p className="orText">or create account with email</p>
 
-        <div className="inputGroup">
+        <div className={`inputGroup ${errors.fullName ? "hasError" : ""}`}>
           <label>Full Name</label>
           <span>👤</span>
           <input
             type="text"
             placeholder="Your full name"
             value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
+            onChange={(e) => {
+              setFullName(e.target.value);
+              if (errors.fullName) {
+                setErrors((prev) => ({ ...prev, fullName: "" }));
+              }
+            }}
           />
+          {errors.fullName && <p className="errorText">{errors.fullName}</p>}
         </div>
 
-        <div className="inputGroup">
+        <div className={`inputGroup ${errors.email ? "hasError" : ""}`}>
           <label>Email</label>
           <span>✉️</span>
           <input
             type="email"
             placeholder="you@example.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (errors.email) {
+                setErrors((prev) => ({ ...prev, email: "" }));
+              }
+            }}
           />
+          {errors.email && <p className="errorText">{errors.email}</p>}
         </div>
 
-        <div className="inputGroup">
+        <div className={`inputGroup ${errors.password ? "hasError" : ""}`}>
           <label>Password</label>
           <span>🔒</span>
           <input
             type="password"
             placeholder="••••••••"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              if (errors.password) {
+                setErrors((prev) => ({ ...prev, password: "" }));
+              }
+            }}
           />
+          {errors.password && <p className="errorText">{errors.password}</p>}
         </div>
 
-        <div className="inputGroup">
+        <div className={`inputGroup ${errors.confirmPassword ? "hasError" : ""}`}>
           <label>Confirm Password</label>
           <span>🔐</span>
           <input
             type="password"
             placeholder="Confirm password"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              if (errors.confirmPassword) {
+                setErrors((prev) => ({ ...prev, confirmPassword: "" }));
+              }
+            }}
           />
+          {errors.confirmPassword && <p className="errorText">{errors.confirmPassword}</p>}
         </div>
 
         <button className="loginBtn" onClick={handleSignup}>
