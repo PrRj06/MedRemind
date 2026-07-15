@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import User from "../user/user.model.js";
+import Patient from "../patient/patient.model.js";
 import ApiError from "../../shared/utils/ApiError.js";
 import { hashPassword } from "../../shared/utils/hashPassword.js";
 import { comparePassword } from "../../shared/utils/comparePassword.js";
@@ -25,6 +26,13 @@ export const registerService = async (userData) => {
     user.emailVerificationToken = hashedToken;
     user.emailVerificationExpires = new Date(Date.now() + 60 * 60 * 1000);
     await user.save();
+
+    // to create a empty patient document for patient
+    if (user.role === "patient"){
+        await Patient.create({
+            userId: user._id,
+        });
+    }
 
     try {
         await sendVerificationEmail({user, token});
