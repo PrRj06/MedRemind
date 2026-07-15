@@ -3,6 +3,7 @@ import { useState } from "react";
 import logo from "../assests/unnamed.png";
 
 function Login({ onSwitchToSignup }) {
+  const [role, setRole] = useState("patient");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -110,6 +111,40 @@ function Login({ onSwitchToSignup }) {
             Sign in to manage medicine reminders for your loved ones.
           </p>
 
+          <div className="roleSelector">
+            <p className="roleLabel">Select your role to continue</p>
+            <div
+              className="roleGrid"
+              role="radiogroup"
+              aria-label="Select your role"
+            >
+              <button
+                type="button"
+                role="radio"
+                aria-checked={role === "doctor"}
+                className={`roleCard ${role === "doctor" ? "active" : ""}`}
+                onClick={() => setRole("doctor")}
+              >
+                <span className="roleIcon" aria-hidden="true">
+                  🩺
+                </span>
+                <span className="roleName">I am a Doctor</span>
+              </button>
+              <button
+                type="button"
+                role="radio"
+                aria-checked={role === "patient"}
+                className={`roleCard ${role === "patient" ? "active" : ""}`}
+                onClick={() => setRole("patient")}
+              >
+                <span className="roleIcon" aria-hidden="true">
+                  🧑
+                </span>
+                <span className="roleName">I am a Patient</span>
+              </button>
+            </div>
+          </div>
+
           <button type="button" className="googleBtn">
             <span aria-hidden="true">🌐</span> Continue with Google
           </button>
@@ -127,7 +162,7 @@ function Login({ onSwitchToSignup }) {
                 name="email"
                 type="email"
                 autoComplete="email"
-                placeholder="you@example.com"
+                placeholder="Email / Username"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -175,7 +210,7 @@ function Login({ onSwitchToSignup }) {
             </div>
 
             <button type="submit" className="loginBtn">
-              Sign in →
+              Sign in as {role === "doctor" ? "Doctor" : "Patient"} →
             </button>
           </form>
 
@@ -186,18 +221,9 @@ function Login({ onSwitchToSignup }) {
             </button>
           </p>
 
-          <div className="usageInfo">
-            <strong>Managing medicines for:</strong>
-            <div className="usageTypes">
-              <div className="usageType">
-                <span className="icon">❤️</span>
-                <span className="label">Parents / Grandparents</span>
-              </div>
-              <div className="usageType">
-                <span className="icon">🩺</span>
-                <span className="label">Patients (for doctors)</span>
-              </div>
-            </div>
+          <div className="trustBadge">
+            <span aria-hidden="true">🔒</span>
+            Protected by secure role-based authentication
           </div>
         </div>
       </div>

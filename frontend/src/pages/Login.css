@@ -17,14 +17,25 @@ body{
     min-height: 100svh;
     display:flex;
     justify-content:center;
+    align-items:center;
     background: #f5f0eb;
+    padding: 40px 16px;
 }
 
 .container{
     display:flex;
     width:100%;
     max-width:1440px;
-    min-height:100svh;
+    min-height:min(820px, 100svh);
+    border-radius:28px;
+    overflow:hidden;
+    box-shadow: 0 30px 70px rgba(44,32,20,0.14), 0 8px 24px rgba(44,32,20,0.06);
+    animation: fadeInUp 0.5s ease both;
+}
+
+@keyframes fadeInUp{
+    from{ opacity:0; transform:translateY(18px); }
+    to{ opacity:1; transform:translateY(0); }
 }
 
 .left{
@@ -269,6 +280,85 @@ body{
     line-height:1.5;
 }
 
+.roleSelector{
+    margin: 22px 0;
+}
+
+.roleLabel{
+    font-size: 13px;
+    font-weight: 600;
+    color: #2c2c2c;
+    margin-bottom: 10px;
+}
+
+.roleGrid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.roleCard{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    padding:16px 10px;
+    border:2px solid #eee2d6;
+    border-radius:14px;
+    background:#faf7f2;
+    cursor:pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.roleCard:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(212,165,116,0.2);
+    border-color:#e8cfa8;
+}
+
+.roleCard .roleIcon{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    background:white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    transition: all 0.25s ease;
+}
+
+.roleCard .roleName{
+    font-size: 13px;
+    font-weight: 600;
+    color: #2c2c2c;
+}
+
+.roleCard.active{
+    border-color:#d4a574;
+    background:#fbeee0;
+    box-shadow: 0 8px 20px rgba(212,165,116,0.3);
+    transform: translateY(-2px);
+}
+
+.roleCard.active .roleIcon{
+    background:#d4a574;
+    color:white;
+    transform: scale(1.1);
+}
+
+.trustBadge{
+    margin-top: 22px;
+    text-align:center;
+    font-size: 11px;
+    color:#aaa;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+}
+
 .googleBtn{
     width:100%;
     padding:14px;
@@ -288,7 +378,8 @@ body{
 
 .googleBtn:hover{
     background:#faf7f2;
-    box-shadow: 0 2px 8px rgba(212, 165, 116, 0.15);
+    box-shadow: 0 6px 16px rgba(212, 165, 116, 0.2);
+    transform: translateY(-2px);
 }
 
 .orText{
@@ -420,7 +511,8 @@ body{
 
 .loginBtn:hover{
     background: #c49563;
-    box-shadow: 0 4px 12px rgba(212, 165, 116, 0.3);
+    box-shadow: 0 8px 20px rgba(212, 165, 116, 0.35);
+    transform: translateY(-2px);
 }
 
 .loginBtn:active{
@@ -575,6 +667,35 @@ input:focus-visible,
 .container.dark .darkModeToggle{
     color:#9fb0bb;
 }
+.container.dark .roleLabel{
+    color:#e6eef6;
+}
+.container.dark .roleCard{
+    background:#06202b;
+    border-color:#14323c;
+}
+.container.dark .roleCard .roleName{
+    color:#e6eef6;
+}
+.container.dark .roleCard .roleIcon{
+    background:#0b1620;
+}
+.container.dark .roleCard:hover{
+    border-color:#f6c77b;
+    box-shadow: 0 8px 20px rgba(246,199,123,0.15);
+}
+.container.dark .roleCard.active{
+    border-color:#f6c77b;
+    background:rgba(246,199,123,0.1);
+    box-shadow: 0 8px 20px rgba(246,199,123,0.25);
+}
+.container.dark .roleCard.active .roleIcon{
+    background:#f6c77b;
+    color:#071126;
+}
+.container.dark .trustBadge{
+    color:#5c6b76;
+}
 
 
 @media (max-width: 1280px){
@@ -586,7 +707,8 @@ input:focus-visible,
 }
 
 @media (max-width: 860px){
-    .container{ flex-direction:column; max-width:640px; margin:0 auto; }
+    .page{ padding:20px 12px; }
+    .container{ flex-direction:column; max-width:640px; margin:0 auto; border-radius:20px; }
     .left, .right{ flex:none; width:100%; max-width:none; min-width:0; }
     .left{ gap:28px; }
     .right{ padding-top:72px; }

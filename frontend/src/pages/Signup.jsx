@@ -3,6 +3,7 @@ import { useState } from "react";
 import logo from "../assests/unnamed.png";
 
 function Signup({ onSwitchToLogin }) {
+  const [role, setRole] = useState("patient");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -108,6 +109,40 @@ function Signup({ onSwitchToLogin }) {
             ones.
           </p>
 
+          <div className="roleSelector">
+            <p className="roleLabel">Select your role to continue</p>
+            <div
+              className="roleGrid"
+              role="radiogroup"
+              aria-label="Select your role"
+            >
+              <button
+                type="button"
+                role="radio"
+                aria-checked={role === "doctor"}
+                className={`roleCard ${role === "doctor" ? "active" : ""}`}
+                onClick={() => setRole("doctor")}
+              >
+                <span className="roleIcon" aria-hidden="true">
+                  🩺
+                </span>
+                <span className="roleName">I am a Doctor</span>
+              </button>
+              <button
+                type="button"
+                role="radio"
+                aria-checked={role === "patient"}
+                className={`roleCard ${role === "patient" ? "active" : ""}`}
+                onClick={() => setRole("patient")}
+              >
+                <span className="roleIcon" aria-hidden="true">
+                  🧑
+                </span>
+                <span className="roleName">I am a Patient</span>
+              </button>
+            </div>
+          </div>
+
           <button type="button" className="googleBtn">
             <span aria-hidden="true">🌐</span> Continue with Google
           </button>
@@ -202,7 +237,7 @@ function Signup({ onSwitchToLogin }) {
             </div>
 
             <button type="submit" className="loginBtn">
-              Create account →
+              Create {role === "doctor" ? "Doctor" : "Patient"} Account →
             </button>
           </form>
 
@@ -213,18 +248,9 @@ function Signup({ onSwitchToLogin }) {
             </button>
           </p>
 
-          <div className="usageInfo">
-            <strong>Managing medicines for:</strong>
-            <div className="usageTypes">
-              <div className="usageType">
-                <span className="icon">❤️</span>
-                <span className="label">Parents / Grandparents</span>
-              </div>
-              <div className="usageType">
-                <span className="icon">🩺</span>
-                <span className="label">Patients (for doctors)</span>
-              </div>
-            </div>
+          <div className="trustBadge">
+            <span aria-hidden="true">🔒</span>
+            Protected by secure role-based authentication
           </div>
         </div>
       </div>
