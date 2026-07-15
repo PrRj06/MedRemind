@@ -2,26 +2,26 @@ import "./Login.css";
 import { useState } from "react";
 import logo from "./assests/unnamed.png";
 
-function Login({ onSwitchToSignup }) {
+function Signup({ onSwitchToLogin }) {
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [darkMode, setDarkMode] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
 
-  const handleLogin = (e) => {
+  const handleSignup = (e) => {
     e.preventDefault();
   };
 
   return (
-    <div className={`container ${darkMode ? 'dark' : ''}`}>
-      {/* Left Section */}
+    <div className={`container ${darkMode ? "dark" : ""}`}>
       <div className="left">
         <div>
           <div className="logo">
-            <img 
-            src={logo}
-            alt="MedRemind Logo"
-            className="w-24 h-24 rounded-full"
+            <img
+              src={logo}
+              alt="MedRemind Logo"
+              className="w-24 h-24 rounded-full"
             />
             <div>
               <h1>MedRemind</h1>
@@ -34,41 +34,38 @@ function Login({ onSwitchToSignup }) {
 
         <div>
           <h2>
-            Never let your precious ones
+            Welcome to a calmer
             <br />
-            <span>Miss a dose.</span>
+            <span>care routine.</span>
           </h2>
-
 
           <div className="cards">
             <div className="card">
               <h3>❤️ Family Care</h3>
-              <p>Manage medicines for your parents & grandparents from anywhere.</p>
+              <p>Keep every medication schedule in one safe place.</p>
             </div>
 
             <div className="card">
               <h3>💬 WhatsApp Reminders</h3>
-              <p>Automatic medicine alerts sent directly on WhatsApp.</p>
+              <p>Send timely reminders straight to loved ones.</p>
             </div>
 
             <div className="card">
               <h3>🩺 Doctor Trusted</h3>
-              <p>Clinics use MedRemind to ensure patients follow prescriptions.</p>
+              <p>Support patients with reliable reminders and tracking.</p>
             </div>
 
             <div className="card">
               <h3>📊 Adherence Tracking</h3>
-              <p>Track whether medicines are taken on time.</p>
+              <p>Monitor medicine-taking habits easily and confidently.</p>
             </div>
 
             <div className="card appointment">
               <h3>📅 Doctor Appointment</h3>
-              <p>Book your doctor appointments directly in one click.</p>
+              <p>Coordinate care and appointments from one simple dashboard.</p>
             </div>
-            
           </div>
         </div>
-
 
         <div className="testimonials">
           <div className="avatars">
@@ -86,21 +83,34 @@ function Login({ onSwitchToSignup }) {
         </div>
       </div>
 
-      {/* Right Section */}
       <div className="right">
         <div className="darkModeToggle">
           <span>🌙 Dark Mode</span>
-          <div className={`toggleSwitch ${darkMode ? 'active' : ''}`} onClick={() => setDarkMode(!darkMode)} />
+          <div
+            className={`toggleSwitch ${darkMode ? "active" : ""}`}
+            onClick={() => setDarkMode(!darkMode)}
+          />
         </div>
 
-        <h1>Welcome back</h1>
-        <p>Sign in to manage medicine reminders for your loved ones.</p>
+        <h1>Create account</h1>
+        <p>Join MedRemind and start managing medicine reminders for your loved ones.</p>
 
         <button className="googleBtn">
           <span>🌐</span> Continue with Google
         </button>
 
-        <p className="orText">or continue with email</p>
+        <p className="orText">or create account with email</p>
+
+        <div className="inputGroup">
+          <label>Full Name</label>
+          <span>👤</span>
+          <input
+            type="text"
+            placeholder="Your full name"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+          />
+        </div>
 
         <div className="inputGroup">
           <label>Email</label>
@@ -124,25 +134,24 @@ function Login({ onSwitchToSignup }) {
           />
         </div>
 
-        <div className="checkboxContainer">
-          <label className="checkboxLabel">
-            <input 
-              type="checkbox"
-              checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)}
-            />
-            {" "}Remember me
-          </label>
-          <a href="#" className="forgotPassword">Forgot password?</a>
+        <div className="inputGroup">
+          <label>Confirm Password</label>
+          <span>🔐</span>
+          <input
+            type="password"
+            placeholder="Confirm password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
         </div>
 
-        <button className="loginBtn" onClick={handleLogin}>
-          Sign in →
+        <button className="loginBtn" onClick={handleSignup}>
+          Create account →
         </button>
 
         <p className="signup">
-          Don't have an account?
-          <span onClick={onSwitchToSignup}> Sign up</span>
+          Already have an account?
+          <span onClick={onSwitchToLogin}> Sign in</span>
         </p>
 
         <div className="usageInfo">
@@ -163,4 +172,4 @@ function Login({ onSwitchToSignup }) {
   );
 }
 
-export default Login;
+export default Signup;
