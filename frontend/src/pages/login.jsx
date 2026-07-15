@@ -1,17 +1,30 @@
-import "./Login.css";
 import { useState } from "react";
 import logo from "../assests/unnamed.png";
+import "./Login.css";
 
-function Login({ onSwitchToSignup }) {
+const DUMMY_CREDENTIALS = {
+  doctor: { email: "doctor@medremind.com", password: "doctor123" },
+  patient: { email: "patient@medremind.com", password: "patient123" },
+};
+
+function Login({ onSwitchToSignup, onLoginSuccess }) {
   const [role, setRole] = useState("patient");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState("");
 
   const handleLogin = (e) => {
     e.preventDefault();
+    const valid = DUMMY_CREDENTIALS[role];
+    if (email === valid.email && password === valid.password) {
+      setError("");
+      onLoginSuccess?.(role);
+    } else {
+      setError(`Invalid credentials for the ${role} role.`);
+    }
   };
 
   return (
@@ -123,7 +136,10 @@ function Login({ onSwitchToSignup }) {
                 role="radio"
                 aria-checked={role === "doctor"}
                 className={`roleCard ${role === "doctor" ? "active" : ""}`}
-                onClick={() => setRole("doctor")}
+                onClick={() => {
+                  setRole("doctor");
+                  setError("");
+                }}
               >
                 <span className="roleIcon" aria-hidden="true">
                   🩺
@@ -135,7 +151,10 @@ function Login({ onSwitchToSignup }) {
                 role="radio"
                 aria-checked={role === "patient"}
                 className={`roleCard ${role === "patient" ? "active" : ""}`}
-                onClick={() => setRole("patient")}
+                onClick={() => {
+                  setRole("patient");
+                  setError("");
+                }}
               >
                 <span className="roleIcon" aria-hidden="true">
                   🧑
@@ -208,6 +227,8 @@ function Login({ onSwitchToSignup }) {
                 Forgot password?
               </a>
             </div>
+
+            {error && <p className="formError">{error}</p>}
 
             <button type="submit" className="loginBtn">
               Sign in as {role === "doctor" ? "Doctor" : "Patient"} →
