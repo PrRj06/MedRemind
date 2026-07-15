@@ -2,14 +2,33 @@ import "./Login.css";
 import { useState } from "react";
 import logo from "./assests/unnamed.png";
 
-function Login({ onSwitchToSignup }) {
+function Login({ onSwitchToSignup, onSwitchToForgot }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [darkMode, setDarkMode] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!email.trim()) {
+      newErrors.email = "Email is required";
+    }
+
+    if (!password.trim()) {
+      newErrors.password = "Password is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
+    if (validateForm()) {
+      console.log("Login submitted", { email, password, rememberMe });
+    }
   };
 
   return (
@@ -102,26 +121,38 @@ function Login({ onSwitchToSignup }) {
 
         <p className="orText">or continue with email</p>
 
-        <div className="inputGroup">
+        <div className={`inputGroup ${errors.email ? "hasError" : ""}`}>
           <label>Email</label>
           <span>✉️</span>
           <input
             type="email"
             placeholder="you@example.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (errors.email) {
+                setErrors((prev) => ({ ...prev, email: "" }));
+              }
+            }}
           />
+          {errors.email && <p className="errorText">{errors.email}</p>}
         </div>
 
-        <div className="inputGroup">
+        <div className={`inputGroup ${errors.password ? "hasError" : ""}`}>
           <label>Password</label>
           <span>🔒</span>
           <input
             type="password"
             placeholder="••••••••"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              if (errors.password) {
+                setErrors((prev) => ({ ...prev, password: "" }));
+              }
+            }}
           />
+          {errors.password && <p className="errorText">{errors.password}</p>}
         </div>
 
         <div className="checkboxContainer">
@@ -133,7 +164,16 @@ function Login({ onSwitchToSignup }) {
             />
             {" "}Remember me
           </label>
-          <a href="#" className="forgotPassword">Forgot password?</a>
+          <a
+            href="#"
+            className="forgotPassword"
+            onClick={(e) => {
+              e.preventDefault();
+              onSwitchToForgot();
+            }}
+          >
+            Forgot password?
+          </a>
         </div>
 
         <button className="loginBtn" onClick={handleLogin}>

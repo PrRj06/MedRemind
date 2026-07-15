@@ -229,6 +229,18 @@ body{
     margin-bottom: 16px;
 }
 
+.inputGroup.hasError input{
+    border-color: #e74c3c;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.12);
+}
+
+.errorText{
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 6px;
+    font-weight: 500;
+}
+
 .inputGroup label{
     display: block;
     font-size: 13px;
@@ -457,4 +469,47 @@ body{
 }
 .container.dark .rating span{
     color: #f6c77b;
+}
+
+.page-transition {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.page-transition-inner {
+    width: 100%;
+    min-height: 100vh;
+    animation-fill-mode: both;
+}
+
+.page-transition.outgoing .page-transition-inner {
+    animation: slideOutLeft 0.35s ease forwards;
+}
+
+.page-transition.incoming .page-transition-inner {
+    animation: slideInRight 0.35s ease forwards;
+}
+
+@keyframes slideOutLeft {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-105%);
+        opacity: 0;
+    }
+}
+
+@keyframes slideInRight {
+    0% {
+        transform: translateX(105%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
