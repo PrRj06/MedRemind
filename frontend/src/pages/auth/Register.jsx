@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../hooks/useAuth";
 import { zodResolver } from "../../lib/validation/zodResolver";
@@ -13,7 +13,8 @@ import Button from "../../components/common/Button";
 export default function Register() {
   const { register: registerUser, googleLogin } = useAuth();
   const navigate = useNavigate();
-  const [apiError, setApiError] = useState("");
+  const location = useLocation();
+  const [apiError, setApiError] = useState(location.state?.message || "");
 
   const {
     register,

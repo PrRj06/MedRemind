@@ -42,7 +42,14 @@ export default function Login() {
       const destination = redirectTo || (user.role === "doctor" ? "/doctor" : "/patient");
       navigate(destination, { replace: true });
     } catch (error) {
-      setApiError(error.response?.data?.message || "Google Login failed.");
+      const errorMsg = error.response?.data?.message;
+      if (errorMsg === "Role is required for new users signing up with Google.") {
+        navigate("/register", { 
+          state: { message: "Looks like you're new! Please select a role (Patient or Doctor) to complete your Google registration." } 
+        });
+      } else {
+        setApiError(errorMsg || "Google Login failed.");
+      }
     }
   };
 
