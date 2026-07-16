@@ -7,7 +7,7 @@ import { login, register, getCurrentUser, verifyEmail,forgotPassword, resetPassw
 const router = Router();
 
 router.post('/register', validate(registerSchema), register);
-router.get('/login', validate(loginSchema), login)
+router.post('/login', validate(loginSchema), login)
 router.get('/me', authenticate, getCurrentUser);
 router.post('/verify-email', validate(verifyEmailSchema), verifyEmail);
 router.post('/forgot-password', validate(forgetPasswordSchema),forgotPassword );
