@@ -124,19 +124,6 @@ export const verifyEmailService = async (token) => {
     };
 };
 
-export const forgetPasswordService = async (email) => {
-
-    user.emailVerified = true;
-    user.emailVerificationToken = null;
-    user.emailVerificationExpires = null;
-    await user.save();
-
-    return {
-        success: true,
-        message: "Email verified successfully.",
-    };
-};
-
 export const forgotPasswordService = async (email) => {
     const user = await User.findOne({email});
     if(!user){
@@ -175,8 +162,8 @@ export const resetPasswordService = async (token, password) => {
     if(!user){
         throw new ApiError(400,"Invalid or expired token.");
     }
-
-    user.password = password;
+    const hashedPassword = await hashPassword(password)
+    user.password = hashedPassword;
     user.passwordResetToken = null;
     user.passwordResetExpires = null;
     await user.save();
