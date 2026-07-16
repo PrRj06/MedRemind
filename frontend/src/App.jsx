@@ -1,52 +1,42 @@
-import { useState } from "react";
-import Login from "./Login";
-import Signup from "./Signup";
-import ForgetPass from "./forgetpass";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Login from "./pages/auth/Login.jsx";
+import Register from "./pages/auth/Register.jsx";
+import ForgotPassword from "./pages/auth/ForgotPassword.jsx";
+import ResetPassword from "./pages/auth/ResetPassword.jsx";
+import ProtectedRoute from "./components/auth/ProtectedRoute.jsx";
 
-function App() {
-  const [page, setPage] = useState("login");
-  const [stage, setStage] = useState("idle");
-  const [pendingPage, setPendingPage] = useState(null);
-
-  const navigateToPage = (targetPage) => {
-    if (targetPage === page) return;
-    setPendingPage(targetPage);
-    setStage("outgoing");
-  };
-
-  const handleAnimationEnd = () => {
-    if (stage === "outgoing") {
-      setPage(pendingPage);
-      setStage("incoming");
-    } else if (stage === "incoming") {
-      setStage("idle");
-    }
-  };
-
-  const renderPage = () => {
-    if (page === "login") {
-      return (
-        <Login
-          onSwitchToSignup={() => navigateToPage("signup")}
-          onSwitchToForgot={() => navigateToPage("forgot")}
-        />
-      );
-    }
-
-    if (page === "signup") {
-      return <Signup onSwitchToLogin={() => navigateToPage("login")} />;
-    }
-
-    return <ForgetPass onBackToLogin={() => navigateToPage("login")} />;
-  };
-
+export default function App() {
   return (
-    <div className={`page-transition ${stage}`} onAnimationEnd={handleAnimationEnd}>
-      <div className="page-transition-inner" key={page}>
-        {renderPage()}
-      </div>
-    </div>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+
+      <Route
+        path="/patient"
+        element={
+          <ProtectedRoute allowedRoles={["patient"]}>
+            <div className="flex min-h-screen items-center justify-center bg-[var(--background)] text-[var(--text)]">
+              Patient Dashboard — Phase 2
+            </div>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/doctor"
+        element={
+          <ProtectedRoute allowedRoles={["doctor"]}>
+            <div className="flex min-h-screen items-center justify-center bg-[var(--background)] text-[var(--text)]">
+              Doctor Dashboard — Phase 2
+            </div>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
+    </Routes>
   );
 }
-
-export default App;
