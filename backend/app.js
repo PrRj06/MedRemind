@@ -21,12 +21,12 @@ if (process.env.NODE_ENV !== 'production') {
 	app.use(morgan('dev'));
 }
 
-app.use(errorHandler);
-
 app.use('/api', routes);
 
 app.use((_request, response) => {
 	response.status(404).json({ success: false, message: 'Route not found' });
 });
+
+app.use(errorHandler);
 
 export default app;

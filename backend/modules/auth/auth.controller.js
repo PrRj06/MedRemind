@@ -89,3 +89,22 @@ export const logout = async (req,res,next) => {
         message: "Logged out successfully.",
     });
 };
+
+import { googleLoginService } from "./auth.service.js";
+
+export const googleLogin = async (req, res, next) => {
+    try {
+        const { token: googleToken, role } = req.body;
+        const { token, user } = await googleLoginService(googleToken, role);
+
+        res.cookie("accessToken", token, accessTokenCookieOptions);
+
+        return res.status(200).json({
+            success: true,
+            message: "Google login successful",
+            user,
+        });
+    } catch (error) {
+        next(error);
+    }
+};

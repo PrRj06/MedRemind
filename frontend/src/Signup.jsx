@@ -1,6 +1,7 @@
 import "./Login.css";
 import { useState } from "react";
 import logo from "./assests/unnamed.png";
+import { GoogleLogin } from "@react-oauth/google";
 
 function Signup({ onSwitchToLogin }) {
   const [fullName, setFullName] = useState("");
@@ -9,6 +10,30 @@ function Signup({ onSwitchToLogin }) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [darkMode, setDarkMode] = useState(false);
   const [errors, setErrors] = useState({});
+  const [role, setRole] = useState("patient");
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/google", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: credentialResponse.credential,
+          role: role,
+        }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        alert("🎉 Google Auth successful! You are now logged in as " + data.user.role);
+      } else {
+        console.error("Google Signup failed", data.message);
+      }
+    } catch (err) {
+      console.error("Error connecting to server", err);
+    }
+  };
 
   const validateForm = () => {
     const newErrors = {};
@@ -35,10 +60,32 @@ function Signup({ onSwitchToLogin }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Signup submitted", { fullName, email, password });
+      try {
+        const response = await fetch("http://localhost:5000/api/auth/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: fullName,
+            email,
+            password,
+            role,
+          }),
+        });
+        const data = await response.json();
+        if (data.success) {
+          alert("🎉 Signup successful! You are now logged in as " + data.user.role);
+          // TODO: Redirect user to their dashboard or show success message 
+        } else {
+          setErrors((prev) => ({ ...prev, submit: data.message || "Signup failed" }));
+        }
+      } catch (err) {
+        setErrors((prev) => ({ ...prev, submit: "Error connecting to server" }));
+      }
     }
   };
 
@@ -124,11 +171,36 @@ function Signup({ onSwitchToLogin }) {
         <h1>Create account</h1>
         <p>Join MedRemind and start managing medicine reminders for your loved ones.</p>
 
-        <button className="googleBtn">
-          <span>🌐</span> Continue with Google
-        </button>
+        <div className="roleToggle">
+          <button 
+            className={`roleBtn ${role === 'doctor' ? 'active' : ''}`} 
+            onClick={() => setRole('doctor')}
+          >
+            I am a Doctor
+          </button>
+          <button 
+            className={`roleBtn ${role === 'patient' ? 'active' : ''}`} 
+            onClick={() => setRole('patient')}
+          >
+            I am a Patient
+          </button>
+        </div>
+
+        <div className="googleLoginWrapper">
+          <GoogleLogin 
+            onSuccess={handleGoogleSuccess} 
+            onError={() => console.log('Google Signup Failed')}
+            useOneTap
+          />
+        </div>
 
         <p className="orText">or create account with email</p>
+
+        {errors.submit && (
+          <div className="errorBanner">
+            {errors.submit}
+          </div>
+        )}
 
         <div className={`inputGroup ${errors.fullName ? "hasError" : ""}`}>
           <label>Full Name</label>

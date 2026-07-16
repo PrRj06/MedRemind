@@ -53,6 +53,10 @@ export const loginService = async (userData) => {
         throw new ApiError(401, "Invalid email or password.");
     }
 
+    if (user.authProvider === 'google') {
+        throw new ApiError(400, "This account was created with Google. Please click 'Sign in with Google' instead.");
+    }
+
     const passwordMatch = await comparePassword(password, user.password);
 
     if(!passwordMatch){
@@ -107,19 +111,6 @@ export const verifyEmailService = async (token) => {
     };
 };
 
-export const forgetPasswordService = async (email) => {
-
-    user.emailVerified = true;
-    user.emailVerificationToken = null;
-    user.emailVerificationExpires = null;
-    await user.save();
-
-    return {
-        success: true,
-        message: "Email verified successfully.",
-    };
-};
-
 export const forgotPasswordService = async (email) => {
     const user = await User.findOne({email});
     if(!user){
@@ -159,7 +150,7 @@ export const resetPasswordService = async (token, password) => {
         throw new ApiError(400,"Invalid or expired token.");
     }
 
-    user.password = password;
+    user.password = await hashPassword(password);
     user.passwordResetToken = null;
     user.passwordResetExpires = null;
     await user.save();
@@ -170,3 +161,53 @@ export const resetPasswordService = async (token, password) => {
     };
 
 }
+
+import { OAuth2Client } from "google-auth-library";
+
+export const googleLoginService = async (token, role) => {
+    const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+    
+    const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    
+    const { email, name } = payload;
+    
+    let user = await User.findOne({ email });
+    
+    if (user) {
+        if (role && user.role !== role) {
+            throw new ApiError(403, `This account is registered as a ${user.role}. Please select '${user.role === 'doctor' ? 'I am a Doctor' : 'I am a Patient'}' to log in.`);
+        }
+    } else {
+        if (!role) {
+            throw new ApiError(400, "Role is required for new users signing up with Google.");
+        }
+        user = await User.create({
+            name,
+            email,
+            role,
+            authProvider: "google",
+            emailVerified: true,
+        });
+    }
+
+    const jwtToken = generateToken({
+        id: user._id, 
+        role: user.role
+    });
+
+    return {
+        token: jwtToken,
+        user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            emailVerified: user.emailVerified,
+            authProvider: user.authProvider,
+        }
+    };
+};

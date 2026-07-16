@@ -59,3 +59,8 @@ export const resetPasswordSchema = z.object({
         .min(8, "Password must contain at least 8 characters")
         .max(100),
 });
+
+export const googleLoginSchema = z.object({
+    token: z.string().trim().min(1, "Google token is required."),
+    role: z.enum(["doctor", "patient"]).optional(),
+});

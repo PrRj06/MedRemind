@@ -234,11 +234,21 @@ body{
     box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.12);
 }
 
-.errorText{
-    color: #e74c3c;
-    font-size: 12px;
-    margin-top: 6px;
-    font-weight: 500;
+.errorText {
+  color: #ef4444;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+.errorBanner {
+  background-color: #fee2e2;
+  color: #991b1b;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  text-align: center;
+  border: 1px solid #f87171;
 }
 
 .inputGroup label{
@@ -275,6 +285,43 @@ body{
     outline: none;
     border-color: #d4a574;
     box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.1);
+}
+
+/* Role Toggle (Segmented Control) */
+.roleToggle {
+  display: flex;
+  background: #f0e8df;
+  border-radius: 12px;
+  padding: 6px;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.roleBtn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background: transparent;
+  color: #888;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 2;
+}
+
+.roleBtn.active {
+  background: white;
+  color: #d4a574;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.googleLoginWrapper {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
 }
 
 .checkboxContainer{
@@ -463,6 +510,17 @@ body{
 }
 .container.dark .googleBtn:hover{
     background: rgba(246,199,123,0.08);
+}
+.container.dark .roleToggle{
+    background: #0b1620;
+}
+.container.dark .roleBtn{
+    color: #cbd5e1;
+}
+.container.dark .roleBtn.active{
+    background: #10202a;
+    color: #f6c77b;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 .container.dark .forgotPassword{
     color: #f6c77b;

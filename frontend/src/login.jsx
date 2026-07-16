@@ -1,6 +1,7 @@
 import "./Login.css";
 import { useState } from "react";
 import logo from "./assests/unnamed.png";
+import { GoogleLogin } from "@react-oauth/google";
 
 function Login({ onSwitchToSignup, onSwitchToForgot }) {
   const [email, setEmail] = useState("");
@@ -8,6 +9,31 @@ function Login({ onSwitchToSignup, onSwitchToForgot }) {
   const [darkMode, setDarkMode] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState({});
+  const [role, setRole] = useState("patient");
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/google", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: credentialResponse.credential,
+          role: role,
+        }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        alert("🎉 Google Auth successful! You are now logged in as " + data.user.role);
+        // TODO: Handle successful login (example:save token,redirect)
+      } else {
+        console.error("Google Login failed", data.message);
+      }
+    } catch (err) {
+      console.error("Error connecting to server", err);
+    }
+  };
 
   const validateForm = () => {
     const newErrors = {};
@@ -24,10 +50,30 @@ function Login({ onSwitchToSignup, onSwitchToForgot }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Login submitted", { email, password, rememberMe });
+      try {
+        const response = await fetch("http://localhost:5000/api/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        });
+        const data = await response.json();
+        if (data.success) {
+          alert("🎉 Login successful! You are now logged in as " + data.user.role);
+          // TODO: Redirect user to their dashboard
+        } else {
+          setErrors((prev) => ({ ...prev, submit: data.message || "Login failed" }));
+        }
+      } catch (err) {
+        setErrors((prev) => ({ ...prev, submit: "Error connecting to server" }));
+      }
     }
   };
 
@@ -115,11 +161,36 @@ function Login({ onSwitchToSignup, onSwitchToForgot }) {
         <h1>Welcome back</h1>
         <p>Sign in to manage medicine reminders for your loved ones.</p>
 
-        <button className="googleBtn">
-          <span>🌐</span> Continue with Google
-        </button>
+        <div className="roleToggle">
+          <button 
+            className={`roleBtn ${role === 'doctor' ? 'active' : ''}`} 
+            onClick={() => setRole('doctor')}
+          >
+            I am a Doctor
+          </button>
+          <button 
+            className={`roleBtn ${role === 'patient' ? 'active' : ''}`} 
+            onClick={() => setRole('patient')}
+          >
+            I am a Patient
+          </button>
+        </div>
+
+        <div className="googleLoginWrapper">
+          <GoogleLogin 
+            onSuccess={handleGoogleSuccess} 
+            onError={() => console.log('Google Login Failed')}
+            useOneTap
+          />
+        </div>
 
         <p className="orText">or continue with email</p>
+        
+        {errors.submit && (
+          <div className="errorBanner">
+            {errors.submit}
+          </div>
+        )}
 
         <div className={`inputGroup ${errors.email ? "hasError" : ""}`}>
           <label>Email</label>
