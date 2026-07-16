@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import User from "../user/user.model.js";
+import Doctor from "../doctor/doctor.model.js";
 import Patient from "../patient/patient.model.js";
 import ApiError from "../../shared/utils/ApiError.js";
 import { hashPassword } from "../../shared/utils/hashPassword.js";
@@ -29,12 +30,19 @@ export const registerService = async (userData) => {
 
     // to create a empty patient document for patient
     if (user.role === "patient"){
-        console.log("Creating patient profile...");
         await Patient.create({
             userId: user._id,
         });
     }
 
+    // to create a empty doctor document for patient
+    if (user.role === "doctor"){
+        await Doctor.create({
+            userId: user._id,
+        });
+    }
+
+    // email sending with verfication link
     try {
         await sendVerificationEmail({user, token});
     } catch (error) {
