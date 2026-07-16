@@ -1,5 +1,7 @@
 import crypto from "crypto";
 import User from "../user/user.model.js";
+import Doctor from "../doctor/doctor.model.js";
+import Patient from "../patient/patient.model.js";
 import ApiError from "../../shared/utils/ApiError.js";
 import { hashPassword } from "../../shared/utils/hashPassword.js";
 import { comparePassword } from "../../shared/utils/comparePassword.js";
@@ -26,6 +28,21 @@ export const registerService = async (userData) => {
     user.emailVerificationExpires = new Date(Date.now() + 60 * 60 * 1000);
     await user.save();
 
+    // to create a empty patient document for patient
+    if (user.role === "patient"){
+        await Patient.create({
+            userId: user._id,
+        });
+    }
+
+    // to create a empty doctor document for patient
+    if (user.role === "doctor"){
+        await Doctor.create({
+            userId: user._id,
+        });
+    }
+
+    // email sending with verfication link
     try {
         await sendVerificationEmail({user, token});
     } catch (error) {
