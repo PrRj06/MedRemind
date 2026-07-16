@@ -11,7 +11,7 @@ import PasswordInput from "../../components/common/PasswordInput";
 import Button from "../../components/common/Button";
 
 export default function Login() {
-  const { login } = useAuth();
+  const { login, googleLogin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [apiError, setApiError] = useState("");
@@ -34,12 +34,25 @@ export default function Login() {
     }
   };
 
+  const handleGoogleLogin = async (token) => {
+    setApiError("");
+    try {
+      const user = await googleLogin({ token });
+      const redirectTo = location.state?.from?.pathname;
+      const destination = redirectTo || (user.role === "doctor" ? "/doctor" : "/patient");
+      navigate(destination, { replace: true });
+    } catch (error) {
+      setApiError(error.response?.data?.message || "Google Login failed.");
+    }
+  };
+
   return (
     <AuthLayout>
       <AuthFormWrapper
         title="Welcome back"
         subtitle="Log in to manage your medications and reminders."
         showGoogle
+        onGoogleLogin={handleGoogleLogin}
         footer={
           <>
             Don&apos;t have an account?{" "}

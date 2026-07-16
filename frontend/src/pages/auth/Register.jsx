@@ -11,15 +11,18 @@ import PasswordInput from "../../components/common/PasswordInput";
 import Button from "../../components/common/Button";
 
 export default function Register() {
-  const { register: registerUser } = useAuth();
+  const { register: registerUser, googleLogin } = useAuth();
   const navigate = useNavigate();
   const [apiError, setApiError] = useState("");
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm({ resolver: zodResolver(registerSchema) });
+
+  const selectedRole = watch("role");
 
   const onSubmit = async (data) => {
     setApiError("");
@@ -39,12 +42,29 @@ export default function Register() {
     }
   };
 
+  const handleGoogleLogin = async (token) => {
+    setApiError("");
+    if (!selectedRole) {
+      setApiError("Please select a role (Patient or Doctor) before continuing with Google.");
+      return;
+    }
+    
+    try {
+      const user = await googleLogin({ token, role: selectedRole });
+      const destination = user.role === "doctor" ? "/doctor" : "/patient";
+      navigate(destination, { replace: true });
+    } catch (error) {
+      setApiError(error.response?.data?.message || "Google Signup failed.");
+    }
+  };
+
   return (
     <AuthLayout>
       <AuthFormWrapper
         title="Create your account"
         subtitle="Start managing medications the smart way."
         showGoogle
+        onGoogleLogin={handleGoogleLogin}
         footer={
           <>
             Already have an account?{" "}

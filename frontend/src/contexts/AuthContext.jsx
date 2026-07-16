@@ -4,6 +4,7 @@ import {
   registerRequest,
   logoutRequest,
   getCurrentUserRequest,
+  googleLoginRequest,
 } from "../services/auth.service";
 
 export const AuthContext = createContext(null);
@@ -34,6 +35,13 @@ export function AuthProvider({ children }) {
     return currentUser;
   }, []);
 
+  const googleLogin = useCallback(async (payload) => {
+    await googleLoginRequest(payload);
+    const currentUser = await getCurrentUserRequest();
+    setUser(currentUser);
+    return currentUser;
+  }, []);
+
   const register = useCallback(async (payload) => {
     await registerRequest(payload);
   }, []);
@@ -48,6 +56,7 @@ export function AuthProvider({ children }) {
     loading,
     isAuthenticated: Boolean(user),
     login,
+    googleLogin,
     register,
     logout,
   };
