@@ -3,7 +3,11 @@ import SearchBar from "./SearchBar";
 import Button from "../common/Button";
 import { UserPlus, AlertCircle, CheckCircle } from "lucide-react";
 
-export default function SearchPatient({ onSendRequest }) {
+export default function SearchPatient({
+  onSendRequest,
+  label = "Search Patient by Email",
+  placeholder = "patient@example.com",
+}) {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState({ type: null, message: "" });
@@ -40,7 +44,7 @@ export default function SearchPatient({ onSendRequest }) {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="flex flex-col gap-2">
         <label htmlFor="search-email" className="text-sm font-medium text-[var(--text)]">
-          Search Patient by Email
+          {label}
         </label>
         <div className="flex flex-col sm:flex-row gap-3">
           <SearchBar
@@ -49,7 +53,7 @@ export default function SearchPatient({ onSendRequest }) {
               setEmail(val);
               if (feedback.type) setFeedback({ type: null, message: "" });
             }}
-            placeholder="patient@example.com"
+            placeholder={placeholder}
             onClear={() => {
               setEmail("");
               setFeedback({ type: null, message: "" });

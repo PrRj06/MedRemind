@@ -27,7 +27,7 @@ export default function EmptyConnection({ type = "patients", onAction }) {
       title={config.title}
       description={config.description}
       icon={config.icon}
-      actionLabel={type === "patients" ? "Search Patients" : null}
+      actionLabel={type === "patients" ? "Search Patients" : type === "doctors" ? "Search Doctors" : null}
       onAction={onAction}
     />
   );
