@@ -17,7 +17,8 @@ export async function logoutRequest() {
 
 export async function getCurrentUserRequest() {
   const response = await api.get("/auth/me");
-  return response.data.user ?? response.data;
+  // Backend returns: { success: true, data: { user: { ... } } }
+  return response.data?.data?.user ?? response.data?.user ?? response.data;
 }
 
 export async function verifyEmailRequest(token) {
