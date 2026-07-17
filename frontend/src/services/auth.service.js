@@ -22,7 +22,7 @@ export async function logoutRequest() {
 
 export async function getCurrentUserRequest() {
   const response = await api.get("/auth/me");
-  return response.data.user ?? response.data;
+  return response.data.data.user;
 }
 
 export async function verifyEmailRequest(token) {

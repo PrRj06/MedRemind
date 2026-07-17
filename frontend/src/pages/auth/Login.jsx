@@ -27,7 +27,8 @@ export default function Login() {
     try {
       const user = await login({ email: data.email, password: data.password });
       const redirectTo = location.state?.from?.pathname;
-      const destination = redirectTo || (user.role === "doctor" ? "/doctor" : "/patient");
+      const isDoctor = user?.role?.toLowerCase() === "doctor";
+      const destination = redirectTo || (isDoctor ? "/doctor" : "/patient");
       navigate(destination, { replace: true });
     } catch (error) {
       setApiError(error.response?.data?.message || "Invalid email or password.");
