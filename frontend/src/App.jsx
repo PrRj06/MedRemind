@@ -4,6 +4,10 @@ import Register from "./pages/auth/Register.jsx";
 import ForgotPassword from "./pages/auth/ForgotPassword.jsx";
 import ResetPassword from "./pages/auth/ResetPassword.jsx";
 import ProtectedRoute from "./components/auth/ProtectedRoute.jsx";
+import PatientLayout from "./components/patient/PatientLayout.jsx";
+import PatientHome from "./pages/patient/PatientHome.jsx";
+import PatientPillBox from "./pages/patient/PatientPillBox.jsx";
+import PatientProfilePage from "./pages/patient/PatientProfilePage.jsx";
 
 export default function App() {
   return (
@@ -17,12 +21,14 @@ export default function App() {
         path="/patient"
         element={
           <ProtectedRoute allowedRoles={["patient"]}>
-            <div className="flex min-h-screen items-center justify-center bg-[var(--background)] text-[var(--text)]">
-              Patient Dashboard — Phase 2
-            </div>
+            <PatientLayout />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route index element={<PatientHome />} />
+        <Route path="pillbox" element={<PatientPillBox />} />
+        <Route path="profile" element={<PatientProfilePage />} />
+      </Route>
 
       <Route
         path="/doctor"
