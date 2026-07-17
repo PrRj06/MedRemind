@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import EmptyState from "./EmptyState";
 import PatientCard from "./PatientCard";
 import { Users } from "lucide-react";
@@ -13,10 +14,22 @@ export default function PatientList({ patients = [] }) {
     );
   }
 
+  // Build a stable key for each patient: prefer existing id fields, otherwise
+  // generate a UUID once per render for each patient object using useMemo.
+  const patientsWithKeys = useMemo(
+    () =>
+      patients.map((p) => ({
+        __uid:
+          p.id || p._id || p.userId || (typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2)),
+        patient: p,
+      })),
+    [patients]
+  );
+
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {patients.map((patient, index) => (
-        <PatientCard key={index} patient={patient} />
+      {patientsWithKeys.map(({ __uid, patient }) => (
+        <PatientCard key={__uid} patient={patient} />
       ))}
     </div>
   );
