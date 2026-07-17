@@ -28,46 +28,48 @@ const addressSchema = z.object({
 });
 
 export const doctorProfileSchema = z.object({
-    specialization: z
-        .string()
-        .trim()
-        .min(2, "Specialization must be at least 2 characters.")
-        .optional(),
+    body: z.object({
+        specialization: z
+            .string()
+            .trim()
+            .min(2, "Specialization must be at least 2 characters.")
+            .optional(),
 
-    qualification: z
-        .string()
-        .trim()
-        .min(2, "Qualification must be at least 2 characters.")
-        .optional(),
+        qualification: z
+            .string()
+            .trim()
+            .min(2, "Qualification must be at least 2 characters.")
+            .optional(),
 
-    experience: z
-        .number()
-        .min(0, "Experience cannot be negative.")
-        .max(70, "Experience seems invalid.")
-        .optional(),
+        experience: z
+            .number()
+            .min(0, "Experience cannot be negative.")
+            .max(70, "Experience seems invalid.")
+            .optional(),
 
-    hospital: z
-        .string()
-        .trim()
-        .min(2, "Hospital name must be at least 2 characters.")
-        .optional(),
+        hospital: z
+            .string()
+            .trim()
+            .min(2, "Hospital name must be at least 2 characters.")
+            .optional(),
 
-    department: z
-        .string()
-        .trim()
-        .min(2, "Department must be at least 2 characters.")
-        .optional(),
+        department: z
+            .string()
+            .trim()
+            .min(2, "Department must be at least 2 characters.")
+            .optional(),
 
-    licenseNumber: z
-        .string()
-        .trim()
-        .min(5, "License number is too short.")
-        .optional(),
+        licenseNumber: z
+            .string()
+            .trim()
+            .min(5, "License number is too short.")
+            .optional(),
 
-    consultationFee: z
-        .number()
-        .min(0, "Consultation fee cannot be negative.")
-        .optional(),
+        consultationFee: z
+            .number()
+            .min(0, "Consultation fee cannot be negative.")
+            .optional(),
 
-    address: addressSchema.optional(),
+        address: addressSchema.optional(),
+    }),
 });

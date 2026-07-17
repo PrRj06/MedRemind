@@ -1,9 +1,11 @@
 import { NavLink } from "react-router-dom";
-import { Home, Pill, User } from "lucide-react";
+import { Home, Pill, User, Stethoscope, Inbox } from "lucide-react";
 
 const TABS = [
   { to: "/patient", label: "Home", icon: Home, end: true },
   { to: "/patient/pillbox", label: "Pill Box", icon: Pill, end: false },
+  { to: "/patient/doctors", label: "Doctors", icon: Stethoscope, end: false },
+  { to: "/patient/requests", label: "Requests", icon: Inbox, end: false },
   { to: "/patient/profile", label: "Profile", icon: User, end: false },
 ];
 
