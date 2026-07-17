@@ -28,7 +28,7 @@ export function AuthProvider({ children }) {
   }, [fetchCurrentUser]);
 
   const login = useCallback(async (credentials) => {
-    await loginRequest(credentials);
+    const response = await loginRequest(credentials);
     const currentUser = await getCurrentUserRequest();
     setUser(currentUser);
     return currentUser;
