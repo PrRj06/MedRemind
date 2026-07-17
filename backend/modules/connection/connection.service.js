@@ -39,24 +39,29 @@ export const sendConnectionRequestService = async (user, email) => {
 
     let connection = await Connection.findOne({doctorId, patientId});
 
-    if (connection) {
+    if(connection) {
         if (connection.status === "accepted") {
             throw new ApiError(409, "Connection already exists.");
         }
 
-        connection.status = "pending";
-        connection.requestedBy = user.role;
-        await connection.save();
+        if (connection.status === "pending") {
+            throw new ApiError(409, "Connection request is already pending.");
+        }
+
+        if (connection.status === "rejected") {
+            connection.status = "pending";
+            connection.requestedBy = user.role;
+            await connection.save();
+        }
     }else{
         connection = await Connection.create({
             doctorId,
             patientId,
             status: "pending",
-            requestedBy: user.role
+            requestedBy: user.role,
         });
     }
     return connection;
-    
 };
 
 export const acceptConnectionRequestService = async (user, connectionId) => {
