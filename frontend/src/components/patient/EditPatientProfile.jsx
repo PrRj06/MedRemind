@@ -22,9 +22,9 @@ function buildInitialForm(patient) {
     allergies: (patient.allergies || []).join(", "),
     chronicDiseases: (patient.chronicDiseases || []).join(", "),
     emergencyContacts:
-      patient.emergencyContacts && patient.emergencyContacts.length > 0
-        ? patient.emergencyContacts.map((c) => ({ ...c }))
-        : [{ name: "", relationship: "", phone: "" }],
+     patient.emergencyContacts && patient.emergencyContacts.length > 0
+        ? patient.emergencyContacts.map((c) => ({ ...c, id: crypto.randomUUID() }))
+        : [{ id: crypto.randomUUID(), name: "", relationship: "", phone: "" }],
     address: {
       street: patient.address?.street || "",
       city: patient.address?.city || "",
@@ -61,13 +61,13 @@ export default function EditPatientProfile({ patient, onCancel, onSave, isSaving
       return { ...prev, emergencyContacts };
     });
   };
-
+  
   const addContact = () => {
     setForm((prev) => ({
       ...prev,
       emergencyContacts: [
         ...prev.emergencyContacts,
-        { name: "", relationship: "", phone: "" },
+        { id: crypto.randomUUID(), name: "", relationship: "", phone: "" },
       ],
     }));
   };
@@ -186,9 +186,10 @@ export default function EditPatientProfile({ patient, onCancel, onSave, isSaving
         </div>
 
         <div className="flex flex-col gap-3">
-          {form.emergencyContacts.map((contact, index) => (
+        
+        {form.emergencyContacts.map((contact, index) => (
             <div
-              key={index}
+              key={contact.id}
               className="rounded-lg border border-[var(--border)] p-3"
             >
               <div className="grid grid-cols-2 gap-3">
