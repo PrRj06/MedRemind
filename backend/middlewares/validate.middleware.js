@@ -3,7 +3,12 @@ import { ZodError } from "zod";
 const validate = (schema) => {
   return (req, res, next) => {
     try {
-      req.body = schema.parse(req.body);
+      const validatedData = schema.parse({
+        body: req.body,
+        params: req.params,
+        query: req.query,
+      });
+      Object.assign(req,validatedData);
       next();
     } catch (error) {
       if (error instanceof ZodError) {
