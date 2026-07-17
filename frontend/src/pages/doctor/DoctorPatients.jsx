@@ -1,56 +1,146 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import SearchPatient from "../../components/connection/SearchPatient";
 import PatientCard from "../../components/connection/PatientCard";
+import PendingRequestCard from "../../components/connection/PendingRequestCard";
 import EmptyConnection from "../../components/connection/EmptyConnection";
 import Skeleton from "../../components/common/Skeleton";
+import {
+  getConnections,
+  getPendingRequests,
+  acceptRequest,
+  rejectRequest,
+  sendConnectionRequest,
+  disconnectConnection,
+} from "../../services/connection.service";
 
 export default function DoctorPatients() {
-  const [patients, setPatients] = useState([]);
+  const [connections, setConnections] = useState([]);
+  const [pendingRequests, setPendingRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showSearch, setShowSearch] = useState(false);
+  const [error, setError] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
 
-  // Initial mock data load
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setPatients([
-        { id: "p1", name: "Aman Sharma", email: "aman@example.com", age: 24, gender: "Male", status: "accepted" },
-        { id: "p2", name: "Riya Patel", email: "riya@example.com", age: 29, gender: "Female", status: "accepted" },
+  const loadData = useCallback(async () => {
+    try {
+      setError("");
+      const [connRes, pendingRes] = await Promise.all([
+        getConnections(),
+        getPendingRequests(),
       ]);
+      setConnections(connRes.data || []);
+      setPendingRequests(pendingRes.data || []);
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+        err.message ||
+        "Failed to load connections data."
+      );
+    } finally {
       setLoading(false);
-    }, 800);
-
-    return () => clearTimeout(timer);
+    }
   }, []);
 
-  const handleSendRequest = async (newPatient) => {
-    // Simulate API request to send connection request
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        setPatients((prev) => [
-          ...prev,
-          {
-            id: newPatient.id,
-            name: newPatient.name,
-            email: newPatient.email,
-            age: newPatient.age,
-            gender: newPatient.gender,
-            status: "pending",
-          },
-        ]);
-        resolve();
-      }, 500);
-    });
+  useEffect(() => {
+    const t = setTimeout(() => {
+      loadData();
+    }, 0);
+    return () => clearTimeout(t);
+  }, [loadData]);
+
+  const handleSendRequest = async (email) => {
+    // Call service to send connection request
+    const response = await sendConnectionRequest(email);
+    // Refresh data after successful request
+    loadData();
+    return response;
   };
 
-  const handleDisconnect = (targetPatient) => {
-    const confirmed = window.confirm(`Are you sure you want to disconnect from ${targetPatient.name}?`);
-    if (confirmed) {
-      setPatients((prev) => prev.filter((p) => p.id !== targetPatient.id));
+  const handleAccept = async (id) => {
+    try {
+      setError("");
+      setSuccessMsg("");
+      const response = await acceptRequest(id);
+      setSuccessMsg(response.message || "Request accepted successfully.");
+      loadData();
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+        err.message ||
+        "Failed to accept request."
+      );
     }
   };
 
-  const connectedPatients = patients.filter((p) => p.status === "accepted");
-  const pendingSentPatients = patients.filter((p) => p.status === "pending");
+  const handleReject = async (id) => {
+    try {
+      setError("");
+      setSuccessMsg("");
+      const response = await rejectRequest(id);
+      setSuccessMsg(response.message || "Request declined successfully.");
+      loadData();
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+        err.message ||
+        "Failed to decline request."
+      );
+    }
+  };
+
+  const handleDisconnect = async (targetPatient) => {
+    const confirmed = window.confirm(
+      `Are you sure you want to disconnect from ${targetPatient.name}?`
+    );
+    if (!confirmed) return;
+
+    try {
+      setError("");
+      setSuccessMsg("");
+      const response = await disconnectConnection(targetPatient.id);
+      setSuccessMsg(response.message || "Disconnected successfully.");
+      loadData();
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+        err.message ||
+        "Failed to disconnect connection."
+      );
+    }
+  };
+
+  // Map backend accepted connection objects to UI PatientCard format
+  const mappedPatients = connections.map((conn) => {
+    const patientObj = conn.patientId || {};
+    const age = patientObj.dateOfBirth
+      ? new Date().getFullYear() - new Date(patientObj.dateOfBirth).getFullYear()
+      : "N/A";
+
+    return {
+      id: conn._id, // connection ID
+      name: patientObj.userId?.name || "Unknown Patient",
+      email: patientObj.userId?.email || "",
+      age,
+      gender: patientObj.gender || "N/A",
+    };
+  });
+
+  // Map backend pending connection objects to UI PendingRequestCard format
+  const mappedPending = pendingRequests.map((conn) => {
+    const patientObj = conn.patientId || {};
+    const age = patientObj.dateOfBirth
+      ? new Date().getFullYear() - new Date(patientObj.dateOfBirth).getFullYear()
+      : "N/A";
+
+    return {
+      id: conn._id,
+      patient: {
+        name: patientObj.userId?.name || "Unknown Patient",
+        age,
+        gender: patientObj.gender || "N/A",
+      },
+    };
+  });
 
   return (
     <div className="space-y-6">
@@ -70,24 +160,53 @@ export default function DoctorPatients() {
         </button>
       </div>
 
+      {/* Global Success / Error Feedbacks */}
+      {error && (
+        <div className="rounded-lg bg-red-500/10 p-3.5 text-sm text-[var(--danger)] border border-red-500/20">
+          {error}
+        </div>
+      )}
+
+      {successMsg && (
+        <div className="rounded-lg bg-emerald-500/10 p-3.5 text-sm text-[var(--success)] border border-emerald-500/20">
+          {successMsg}
+        </div>
+      )}
+
       {/* Search Section */}
       {showSearch && (
-        <section className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5 md:p-6 shadow-sm animate-fadeIn">
+        <section className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5 md:p-6 shadow-sm">
           <h2 className="text-lg font-semibold text-[var(--text)] mb-2">Connect New Patient</h2>
           <p className="text-xs text-[var(--text-muted)] mb-5">
             Enter your patient's exact email address to send them a connection request. Once they accept, they will appear in your connected patients list.
           </p>
-          <SearchPatient
-            onSendRequest={handleSendRequest}
-            existingPatients={patients}
-          />
+          <SearchPatient onSendRequest={handleSendRequest} />
+        </section>
+      )}
+
+      {/* Pending Requests Received Section */}
+      {mappedPending.length > 0 && (
+        <section className="space-y-4">
+          <h2 className="text-base font-semibold text-[var(--text)]">
+            Pending Connection Requests ({mappedPending.length})
+          </h2>
+          <div className="space-y-3">
+            {mappedPending.map((request) => (
+              <PendingRequestCard
+                key={request.id}
+                request={request}
+                onAccept={handleAccept}
+                onReject={handleReject}
+              />
+            ))}
+          </div>
         </section>
       )}
 
       {/* Connected Patients Section */}
       <section className="space-y-4">
         <h2 className="text-base font-semibold text-[var(--text)]">
-          My Patients ({connectedPatients.length})
+          My Patients ({mappedPatients.length})
         </h2>
 
         {loading ? (
@@ -95,9 +214,9 @@ export default function DoctorPatients() {
             <Skeleton.Card />
             <Skeleton.Card />
           </div>
-        ) : connectedPatients.length > 0 ? (
+        ) : mappedPatients.length > 0 ? (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {connectedPatients.map((patient) => (
+            {mappedPatients.map((patient) => (
               <PatientCard
                 key={patient.id}
                 patient={patient}
@@ -110,25 +229,6 @@ export default function DoctorPatients() {
           <EmptyConnection type="patients" onAction={() => setShowSearch(true)} />
         )}
       </section>
-
-      {/* Pending Requests Sent Section */}
-      {pendingSentPatients.length > 0 && (
-        <section className="space-y-4 pt-4 border-t border-[var(--border)]">
-          <h2 className="text-base font-semibold text-[var(--text)]">
-            Sent Requests ({pendingSentPatients.length})
-          </h2>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {pendingSentPatients.map((patient) => (
-              <PatientCard
-                key={patient.id}
-                patient={patient}
-                onDisconnect={(p) => setPatients((prev) => prev.filter((item) => item.id !== p.id))}
-                status="pending"
-              />
-            ))}
-          </div>
-        </section>
-      )}
     </div>
   );
 }
