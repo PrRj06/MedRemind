@@ -26,7 +26,7 @@ export const login = async (req, res, next) => {
     try{
         const {token, user} = await loginService(req.body);
 
-        res.cookie("accessToken", token, accessTokenCookieOptions);
+        res.cookie(process.env.COOKIE_NAME, token, accessTokenCookieOptions);
 
         return res.status(200).json({
             success: true,

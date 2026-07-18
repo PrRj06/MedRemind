@@ -4,7 +4,7 @@ import { verifyToken } from "../shared/utils/verifyToken.js";
 export const authenticate = async (req,res,next) => {
     try{
         // check if req contains accessToken
-        const token = req.cookies.accessToken;
+        const token = req.cookies[process.env.COOKIE_NAME];
         if(!token){
             throw new ApiError(401, "Access token missing.");
         }
