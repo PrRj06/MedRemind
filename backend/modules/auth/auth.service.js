@@ -197,6 +197,15 @@ export const googleLoginService = async (token, role) => {
         if (role && user.role !== role) {
             throw new ApiError(403, `This account is registered as a ${user.role}. Please select '${user.role === 'doctor' ? 'I am a Doctor' : 'I am a Patient'}' to log in.`);
         }
+        
+        // Self-healing for users created before the profile creation patch
+        if (user.role === "patient") {
+            const profile = await Patient.findOne({ userId: user._id });
+            if (!profile) await Patient.create({ userId: user._id });
+        } else if (user.role === "doctor") {
+            const profile = await Doctor.findOne({ userId: user._id });
+            if (!profile) await Doctor.create({ userId: user._id });
+        }
     } else {
         if (!role) {
             throw new ApiError(400, "Role is required for new users signing up with Google.");
