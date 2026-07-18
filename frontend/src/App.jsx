@@ -22,6 +22,7 @@ import DoctorAnalytics from "./pages/doctor/DoctorAnalytics.jsx";
 // Connection Pages
 import Doctors from "./pages/patient/Doctors.jsx";
 import Requests from "./pages/patient/Requests.jsx";
+import NotificationPage from "./pages/notification/NotificationPage.jsx";
 
 export default function App() {
   return (
@@ -47,6 +48,7 @@ export default function App() {
         <Route path="doctors" element={<Doctors />} />
         <Route path="requests" element={<Requests />} />
         <Route path="analytics" element={<PatientAnalytics />} />
+        <Route path="notifications" element={<NotificationPage />} />
       </Route>
 
       {/* Doctor Module Routes */}
@@ -62,6 +64,7 @@ export default function App() {
         <Route path="patients" element={<DoctorPatients />} />
         <Route path="profile" element={<DoctorProfilePage />} />
         <Route path="analytics" element={<DoctorAnalytics />} />
+        <Route path="notifications" element={<NotificationPage />} />
       </Route>
 
       {/* Wildcard redirects */}
