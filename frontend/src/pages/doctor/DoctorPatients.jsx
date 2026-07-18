@@ -120,6 +120,7 @@ export default function DoctorPatients() {
 
     return {
       id: conn._id, // connection ID
+      patientId: patientObj._id, // patient ID
       name: patientObj.userId?.name || "Unknown Patient",
       email: patientObj.userId?.email || "",
       age,
