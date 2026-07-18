@@ -83,9 +83,28 @@ export const resetPassword = async (req,res,next) => {
 }
 
 export const logout = async (req,res,next) => {
-    res.clearCookie("accessToken", accessTokenCookieOptions);
+    res.clearCookie(process.env.COOKIE_NAME, accessTokenCookieOptions);
     return res.status(200).json({
         success: true,
         message: "Logged out successfully.",
     });
+};
+
+import { googleLoginService } from "./auth.service.js";
+
+export const googleLogin = async (req, res, next) => {
+    try {
+        const { token: googleToken, role } = req.body;
+        const { token, user } = await googleLoginService(googleToken, role);
+
+        res.cookie(process.env.COOKIE_NAME, token, accessTokenCookieOptions);
+
+        return res.status(200).json({
+            success: true,
+            message: "Google login successful",
+            user,
+        });
+    } catch (error) {
+        next(error);
+    }
 };

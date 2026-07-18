@@ -28,4 +28,5 @@ app.use((_request, response) => {
 });
 
 app.use(errorHandler);
+
 export default app;
