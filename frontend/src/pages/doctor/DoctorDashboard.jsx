@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import OverviewCards from "../../components/doctor/OverviewCards";
 import QuickActions from "../../components/doctor/QuickActions";
+import AnalyticsPreview from "../../components/doctor/AnalyticsPreview";
 import { AuthContext } from "../../contexts/AuthContext";
 
 export default function DoctorDashboard() {
@@ -32,6 +33,10 @@ export default function DoctorDashboard() {
       <section className="mt-10">
         <h2 className="mb-4 text-xl font-semibold text-[var(--text)]">Quick Actions</h2>
         <QuickActions />
+      </section>
+
+      <section className="mt-10">
+        <AnalyticsPreview />
       </section>
     </div>
   );

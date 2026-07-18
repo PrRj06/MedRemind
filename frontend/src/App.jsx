@@ -10,16 +10,19 @@ import PatientLayout from "./components/patient/PatientLayout.jsx";
 import PatientHome from "./pages/patient/PatientHome.jsx";
 import PatientPillBox from "./pages/patient/PatientPillBox.jsx";
 import PatientProfilePage from "./pages/patient/PatientProfilePage.jsx";
+import PatientAnalytics from "./pages/patient/PatientAnalytics.jsx";
 
 // Doctor Module
 import DoctorLayout from "./components/doctor/DoctorLayout.jsx";
 import DoctorDashboard from "./pages/doctor/DoctorDashboard.jsx";
 import DoctorPatients from "./pages/doctor/DoctorPatients.jsx";
 import DoctorProfilePage from "./pages/doctor/DoctorProfilePage.jsx";
+import DoctorAnalytics from "./pages/doctor/DoctorAnalytics.jsx";
 
 // Connection Pages
 import Doctors from "./pages/patient/Doctors.jsx";
 import Requests from "./pages/patient/Requests.jsx";
+import NotificationPage from "./pages/notification/NotificationPage.jsx";
 
 export default function App() {
   return (
@@ -44,6 +47,8 @@ export default function App() {
         <Route path="profile" element={<PatientProfilePage />} />
         <Route path="doctors" element={<Doctors />} />
         <Route path="requests" element={<Requests />} />
+        <Route path="analytics" element={<PatientAnalytics />} />
+        <Route path="notifications" element={<NotificationPage />} />
       </Route>
 
       {/* Doctor Module Routes */}
@@ -58,6 +63,8 @@ export default function App() {
         <Route index element={<DoctorDashboard />} />
         <Route path="patients" element={<DoctorPatients />} />
         <Route path="profile" element={<DoctorProfilePage />} />
+        <Route path="analytics" element={<DoctorAnalytics />} />
+        <Route path="notifications" element={<NotificationPage />} />
       </Route>
 
       {/* Wildcard redirects */}

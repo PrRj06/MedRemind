@@ -3,12 +3,20 @@ import { Building2, Stethoscope, MapPin, Award, DollarSign } from "lucide-react"
 export default function DoctorProfile({ profile, onEdit }) {
   if (!profile) return null;
 
+  const formatAddress = (addr) => {
+    if (!addr || typeof addr !== "object") return "Not provided";
+    const parts = [addr.street, addr.city, addr.state, addr.country, addr.pincode]
+      .map((p) => p?.trim())
+      .filter(Boolean);
+    return parts.length > 0 ? parts.join(", ") : "Not provided";
+  };
+
   const details = [
     { icon: Building2, label: "Hospital", value: profile.hospital || "Not provided" },
     { icon: Stethoscope, label: "Department", value: profile.department || "Not provided" },
     { icon: DollarSign, label: "Consultation Fee", value: profile.consultationFee ? `$${profile.consultationFee}` : "Not provided" },
-    { icon: Award, label: "License", value: profile.license || "Not provided" },
-    { icon: MapPin, label: "Address", value: profile.address || "Not provided" },
+    { icon: Award, label: "License", value: profile.licenseNumber || "Not provided" },
+    { icon: MapPin, label: "Address", value: formatAddress(profile.address) },
   ];
 
   return (

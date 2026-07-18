@@ -7,8 +7,8 @@ export default function EditDoctorProfile({ profile, onCancel, onSuccess }) {
     hospital: profile?.hospital || "",
     department: profile?.department || "",
     consultationFee: profile?.consultationFee || "",
-    license: profile?.license || "",
-    address: profile?.address || "",
+    license: profile?.licenseNumber || "",
+    address: profile?.address?.street || "",
   });
   
   const [loading, setLoading] = useState(false);
@@ -25,12 +25,17 @@ export default function EditDoctorProfile({ profile, onCancel, onSuccess }) {
     setError(null);
     try {
       const payload = {
-        ...formData,
-        consultationFee: formData.consultationFee ? Number(formData.consultationFee) : 0,
+        hospital: formData.hospital.trim() || null,
+        department: formData.department.trim() || null,
+        consultationFee: formData.consultationFee ? Number(formData.consultationFee) : null,
+        licenseNumber: formData.license.trim() || null,
+        address: {
+          street: formData.address.trim() || null,
+        }
       };
       
       const updatedProfile = await updateDoctorProfileRequest(payload);
-      onSuccess(updatedProfile.doctor || updatedProfile);
+      onSuccess(updatedProfile.doctor || updatedProfile.data || updatedProfile);
     } catch (err) {
       setError(err.response?.data?.message || "Failed to update profile. Please try again.");
     } finally {

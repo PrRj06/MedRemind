@@ -13,7 +13,7 @@ const TIME_SLOTS = [
 // Today there is no Reminder module yet, so every slot is always empty.
 // Once the Reminder module exists, just fill these arrays with medicines
 // and this component will render them automatically - no redesign needed.
-export default function ScheduleSection({ schedule = {} }) {
+export default function ScheduleSection({ schedule = {}, onLogDose }) {
   const hasAnyMedicine = TIME_SLOTS.some(
     (slot) => (schedule[slot.key] || []).length > 0
   );
@@ -38,12 +38,17 @@ export default function ScheduleSection({ schedule = {} }) {
 
             return (
               <div key={slot.key}>
-                <p className="mb-2 text-xs font-medium uppercase tracking-wide text-[var(--text-muted)]">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)] border-b border-[var(--border)] pb-1">
                   {slot.label}
                 </p>
                 <div className="flex flex-col gap-2">
                   {medicines.map((medicine) => (
-                    <MedicineCard key={medicine.id} medicine={medicine} />
+                    <MedicineCard
+                      key={medicine.id}
+                      medicine={medicine}
+                      isTaken={medicine.isTaken}
+                      onLog={onLogDose ? () => onLogDose(medicine.medicineId, medicine.reminderId, medicine.time) : undefined}
+                    />
                   ))}
                 </div>
               </div>
