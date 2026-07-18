@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 import SearchPatient from "../../components/connection/SearchPatient";
 import PatientCard from "../../components/connection/PatientCard";
 import PendingRequestCard from "../../components/connection/PendingRequestCard";
@@ -14,10 +15,11 @@ import {
 } from "../../services/connection.service";
 
 export default function DoctorPatients() {
+  const [searchParams] = useSearchParams();
   const [connections, setConnections] = useState([]);
   const [pendingRequests, setPendingRequests] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showSearch, setShowSearch] = useState(false);
+  const [showSearch, setShowSearch] = useState(searchParams.get("connect") === "true");
   const [error, setError] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
 
