@@ -1,5 +1,6 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import { Bell } from "lucide-react";
+import { AuthContext } from "../../contexts/AuthContext";
 import {
   getMyNotifications,
   markNotificationRead,
@@ -8,6 +9,7 @@ import {
 import NotificationPanel from "./NotificationPanel";
 
 export default function NotificationButton() {
+  const { user } = useContext(AuthContext);
   const [notifications, setNotifications] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef(null);
@@ -23,11 +25,16 @@ export default function NotificationButton() {
 
   useEffect(() => {
     // Initial load
-    loadNotifications();
+    const t = setTimeout(() => {
+      loadNotifications();
+    }, 0);
 
     // Poll for notifications every 30 seconds for live updates
     const interval = setInterval(loadNotifications, 30000);
-    return () => clearInterval(interval);
+    return () => {
+      clearTimeout(t);
+      clearInterval(interval);
+    };
   }, []);
 
   // Handle click outside to close dropdown
@@ -67,6 +74,7 @@ export default function NotificationButton() {
   };
 
   const unreadCount = notifications.filter((n) => !n.isRead).length;
+  const viewAllPath = user?.role === "doctor" ? "/doctor/notifications" : "/patient/notifications";
 
   return (
     <div className="relative inline-block" ref={containerRef}>
@@ -90,6 +98,7 @@ export default function NotificationButton() {
           onMarkRead={handleMarkRead}
           onMarkAllRead={handleMarkAllRead}
           onClose={() => setIsOpen(false)}
+          viewAllPath={viewAllPath}
         />
       )}
     </div>

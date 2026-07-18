@@ -28,9 +28,12 @@ export default function OverviewCards() {
       }
     }
 
-    load();
+    const t = setTimeout(() => {
+      load();
+    }, 0);
     return () => {
       cancelled = true;
+      clearTimeout(t);
     };
   }, []);
 

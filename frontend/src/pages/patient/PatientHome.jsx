@@ -105,7 +105,10 @@ export default function PatientHome() {
   }, []);
 
   useEffect(() => {
-    loadAllData();
+    const t = setTimeout(() => {
+      loadAllData();
+    }, 0);
+    return () => clearTimeout(t);
   }, [loadAllData]);
 
   const handleLogDose = async (medicineId, reminderId, time) => {

@@ -27,7 +27,7 @@ export default function DoctorAnalytics() {
           setData(result);
           setStatus("ready");
         }
-      } catch (err) {
+      } catch {
         if (!cancelled) setStatus("error");
       }
     }

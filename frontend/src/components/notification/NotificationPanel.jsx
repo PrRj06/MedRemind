@@ -1,4 +1,5 @@
 import { CheckCircle2, XCircle, AlertCircle, BellOff, Check } from "lucide-react";
+import { Link } from "react-router-dom";
 import Card from "../common/Card";
 
 const ICON_MAP = {
@@ -20,6 +21,7 @@ export default function NotificationPanel({
   onMarkRead,
   onMarkAllRead,
   onClose,
+  viewAllPath,
 }) {
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
@@ -81,6 +83,18 @@ export default function NotificationPanel({
           })
         )}
       </Card.Body>
+
+      {viewAllPath && (
+        <div className="border-t border-[var(--border)] p-2.5 text-center">
+          <Link
+            to={viewAllPath}
+            onClick={onClose}
+            className="inline-block text-xs font-semibold text-[var(--primary)] hover:underline cursor-pointer"
+          >
+            View all notifications
+          </Link>
+        </div>
+      )}
     </Card>
   );
 }
