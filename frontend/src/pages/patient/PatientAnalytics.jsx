@@ -31,7 +31,7 @@ export default function PatientAnalytics() {
           setData(result);
           setStatus("ready");
         }
-      } catch (err) {
+      } catch {
         if (!cancelled) setStatus("error");
       }
     }
