@@ -3,7 +3,7 @@ import { getConnections } from "../../services/connection.service";
 import { createMedicine } from "../../services/medicine.service";
 import { createReminder } from "../../services/reminder.service";
 import Button from "../common/Button";
-import { X, Plus, Trash2 } from "lucide-react";
+import { X } from "lucide-react";
 
 export default function AddMedicineModal({ isOpen, onClose, onSuccess }) {
   const [patients, setPatients] = useState([]);
@@ -53,23 +53,7 @@ export default function AddMedicineModal({ isOpen, onClose, onSuccess }) {
     };
   }, [isOpen]);
 
-  // Adjust timing inputs when frequency changes
-  useEffect(() => {
-    const defaultTimes = ["08:00", "14:00", "20:00", "12:00", "18:00", "22:00"];
-    const count = Math.max(1, Math.min(6, frequencyPerDay));
-    setTimes((prev) => {
-      const next = [...prev];
-      if (next.length < count) {
-        // pad with defaults
-        for (let i = next.length; i < count; i++) {
-          next.push(defaultTimes[i] || "08:00");
-        }
-      } else if (next.length > count) {
-        next.splice(count);
-      }
-      return next;
-    });
-  }, [frequencyPerDay]);
+
 
   if (!isOpen) return null;
 
@@ -256,7 +240,23 @@ export default function AddMedicineModal({ isOpen, onClose, onSuccess }) {
                 min="1"
                 max="6"
                 value={frequencyPerDay}
-                onChange={(e) => setFrequencyPerDay(Math.max(1, Math.min(6, Number(e.target.value))))}
+                onChange={(e) => {
+                  const val = Math.max(1, Math.min(6, Number(e.target.value)));
+                  setFrequencyPerDay(val);
+
+                  const defaultTimes = ["08:00", "14:00", "20:00", "12:00", "18:00", "22:00"];
+                  setTimes((prev) => {
+                    const next = [...prev];
+                    if (next.length < val) {
+                      for (let i = next.length; i < val; i++) {
+                        next.push(defaultTimes[i] || "08:00");
+                      }
+                    } else if (next.length > val) {
+                      next.splice(val);
+                    }
+                    return next;
+                  });
+                }}
                 className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface-strong)] p-2.5 outline-none focus:border-[var(--primary)]"
               />
             </div>
