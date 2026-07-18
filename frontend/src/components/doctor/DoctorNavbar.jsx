@@ -1,10 +1,11 @@
 import { NavLink } from "react-router-dom";
-import { Home, Users, User } from "lucide-react";
+import { Home, Users, User, BarChart3 } from "lucide-react";
 
 export default function DoctorNavbar() {
   const navItems = [
     { to: "/doctor", icon: Home, label: "Home", end: true },
     { to: "/doctor/patients", icon: Users, label: "Patients", end: false },
+    { to: "/doctor/analytics", icon: BarChart3, label: "Analytics", end: false },
     { to: "/doctor/profile", icon: User, label: "Profile", end: false },
   ];
 

@@ -2,6 +2,7 @@ import { Stethoscope } from "lucide-react";
 import EmptyState from "../../components/patient/EmptyState";
 import ScheduleSection from "../../components/patient/ScheduleSection";
 import PillBoxPreview from "../../components/patient/PillBoxPreview";
+import AnalyticsPreview from "../../components/patient/AnalyticsPreview";
 
 // There is no Doctor Connection module yet, so every patient is
 // currently "not connected" to a doctor. Once that module exists,
@@ -20,6 +21,8 @@ export default function PatientHome() {
       )}
 
       <ScheduleSection />
+
+      <AnalyticsPreview />
 
       <PillBoxPreview />
     </div>

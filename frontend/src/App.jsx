@@ -10,12 +10,14 @@ import PatientLayout from "./components/patient/PatientLayout.jsx";
 import PatientHome from "./pages/patient/PatientHome.jsx";
 import PatientPillBox from "./pages/patient/PatientPillBox.jsx";
 import PatientProfilePage from "./pages/patient/PatientProfilePage.jsx";
+import PatientAnalytics from "./pages/patient/PatientAnalytics.jsx";
 
 // Doctor Module
 import DoctorLayout from "./components/doctor/DoctorLayout.jsx";
 import DoctorDashboard from "./pages/doctor/DoctorDashboard.jsx";
 import DoctorPatients from "./pages/doctor/DoctorPatients.jsx";
 import DoctorProfilePage from "./pages/doctor/DoctorProfilePage.jsx";
+import DoctorAnalytics from "./pages/doctor/DoctorAnalytics.jsx";
 
 // Connection Pages
 import Doctors from "./pages/patient/Doctors.jsx";
@@ -44,6 +46,7 @@ export default function App() {
         <Route path="profile" element={<PatientProfilePage />} />
         <Route path="doctors" element={<Doctors />} />
         <Route path="requests" element={<Requests />} />
+        <Route path="analytics" element={<PatientAnalytics />} />
       </Route>
 
       {/* Doctor Module Routes */}
@@ -58,6 +61,7 @@ export default function App() {
         <Route index element={<DoctorDashboard />} />
         <Route path="patients" element={<DoctorPatients />} />
         <Route path="profile" element={<DoctorProfilePage />} />
+        <Route path="analytics" element={<DoctorAnalytics />} />
       </Route>
 
       {/* Wildcard redirects */}
