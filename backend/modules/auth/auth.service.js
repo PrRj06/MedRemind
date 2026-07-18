@@ -208,6 +208,12 @@ export const googleLoginService = async (token, role) => {
             authProvider: "google",
             emailVerified: true,
         });
+
+        if (user.role === "patient") {
+            await Patient.create({ userId: user._id });
+        } else if (user.role === "doctor") {
+            await Doctor.create({ userId: user._id });
+        }
     }
 
     const jwtToken = generateToken({
