@@ -48,7 +48,7 @@ export default function Register() {
         footer={
           <>
             Already have an account?{" "}
-            <Link to="/login" className="font-medium text-[var(--primary)]">
+            <Link to="/login" className="font-medium text-[var(--primary)] transition-colors duration-200 hover:text-[var(--primary-hover)] hover:underline underline-offset-2">
               Log in
             </Link>
           </>
@@ -88,15 +88,17 @@ export default function Register() {
           <div>
             <span className="mb-1.5 block text-sm font-medium text-[var(--text)]">I am a</span>
             <div className="grid grid-cols-2 gap-3">
-              <label className="flex cursor-pointer items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 text-sm font-medium text-[var(--text)] has-[:checked]:border-[var(--primary)] has-[:checked]:text-[var(--primary)]">
-                <input type="radio" value="patient" {...register("role")} className="sr-only" />
+              <label className="flex cursor-pointer items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 text-sm font-medium text-[var(--text)] transition-all duration-200 hover:border-[var(--primary)]/50 hover:bg-[var(--primary-light)] has-[:checked]:border-[var(--primary)] has-[:checked]:text-[var(--primary)] has-[:checked]:bg-[var(--primary-light)]">
+              <input type="radio" value="patient" {...register("role")} className="sr-only" />
                 Patient
-              </label>
-              <label className="flex cursor-pointer items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 text-sm font-medium text-[var(--text)] has-[:checked]:border-[var(--primary)] has-[:checked]:text-[var(--primary)]">
+                </label>
+                <label className="flex cursor-pointer items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 text-sm font-medium text-[var(--text)] transition-all duration-200 hover:border-[var(--primary)]/50 hover:bg-[var(--primary-light)] has-[:checked]:border-[var(--primary)] has-[:checked]:text-[var(--primary)] has-[:checked]:bg-[var(--primary-light)]">
                 <input type="radio" value="doctor" {...register("role")} className="sr-only" />
-                Doctor
-              </label>
+                 Doctor
+                </label>
             </div>
+
+
             {errors.role && (
               <p role="alert" className="mt-1.5 text-xs text-[var(--danger)]">
                 {errors.role.message}

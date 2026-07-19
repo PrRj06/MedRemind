@@ -38,7 +38,7 @@ export default function ResetPassword() {
           title="Invalid reset link"
           subtitle="This password reset link is missing or malformed."
           footer={
-            <Link to="/forgot-password" className="font-medium text-[var(--primary)]">
+            <Link to="/forgot-password" className="font-medium text-[var(--primary)] transition-colors duration-200 hover:text-[var(--primary-hover)] hover:underline underline-offset-2">
               Request a new link
             </Link>
           }

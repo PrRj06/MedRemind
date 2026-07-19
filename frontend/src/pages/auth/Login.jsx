@@ -44,7 +44,7 @@ export default function Login() {
         footer={
           <>
             Don&apos;t have an account?{" "}
-            <Link to="/register" className="font-medium text-[var(--primary)]">
+            <Link to="/register" className="font-medium text-[var(--primary)] transition-colors duration-200 hover:text-[var(--primary-hover)] hover:underline underline-offset-2">
               Register
             </Link>
           </>
@@ -68,7 +68,7 @@ export default function Login() {
           />
 
           <div className="flex justify-end text-sm">
-            <Link to="/forgot-password" className="font-medium text-[var(--primary)]">
+            <Link to="/forgot-password" className="font-medium text-[var(--primary)] transition-colors duration-200 hover:text-[var(--primary-hover)] hover:underline underline-offset-2">
               Forgot password?
             </Link>
           </div>

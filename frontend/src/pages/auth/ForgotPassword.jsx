@@ -36,7 +36,7 @@ export default function ForgotPassword() {
           title="Check your email"
           subtitle="If an account exists for that email, we've sent a link to reset your password."
           footer={
-            <Link to="/login" className="font-medium text-[var(--primary)]">
+            <Link to="/login" className="font-medium text-[var(--primary)] transition-colors duration-200 hover:text-[var(--primary-hover)] hover:underline underline-offset-2">
               Back to login
             </Link>
           }
@@ -55,7 +55,7 @@ export default function ForgotPassword() {
         footer={
           <>
             Remembered it?{" "}
-            <Link to="/login" className="font-medium text-[var(--primary)]">
+            <Link to="/login" className="font-medium text-[var(--primary)] transition-colors duration-200 hover:text-[var(--primary-hover)] hover:underline underline-offset-2">
               Back to login
             </Link>
           </>
