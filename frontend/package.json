@@ -11,6 +11,7 @@
     "predev": "kill-port 5173 && node -e \"setTimeout(()=>{}, 800)\""
   },
   "dependencies": {
+    "@react-oauth/google": "^0.13.5",
     "@tailwindcss/vite": "^4.3.2",
     "axios": "^1.18.1",
     "dotenv": "^17.4.2",
