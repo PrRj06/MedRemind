@@ -30,13 +30,19 @@ export function AuthProvider({ children }) {
 
   const login = useCallback(async (credentials) => {
     const response = await loginRequest(credentials);
+    if (response?.token) {
+      localStorage.setItem("token", response.token);
+    }
     const currentUser = await getCurrentUserRequest();
     setUser(currentUser);
     return currentUser;
   }, []);
 
   const googleLogin = useCallback(async (payload) => {
-    await googleLoginRequest(payload);
+    const response = await googleLoginRequest(payload);
+    if (response?.token) {
+      localStorage.setItem("token", response.token);
+    }
     const currentUser = await getCurrentUserRequest();
     setUser(currentUser);
     return currentUser;
@@ -47,8 +53,12 @@ export function AuthProvider({ children }) {
   }, []);
 
   const logout = useCallback(async () => {
-    await logoutRequest();
-    setUser(null);
+    try {
+      await logoutRequest();
+    } finally {
+      localStorage.removeItem("token");
+      setUser(null);
+    }
   }, []);
 
   const value = {
